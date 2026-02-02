@@ -1,0 +1,151 @@
+
+
+<h1>Welcome to Research web!</h1>
+
+<div class="register">
+  <form id="register_form" action="{{url_for("register")}}" method="post" >
+    <h1>Register</h1>
+    <input type="text" name="username_register" placeholder="username" id="username" class="input-field" required autofocus maxlength="25">
+    <br>
+    <input type="password" name="password_register" placeholder="password" id= "ps" class="input-field" required autofocus maxlength="15">
+    <input type="image" src="https://www.svgrepo.com/show/453442/visibility-off.svg" onclick="see_ps();return false;" id="image" >
+
+    <div class="btn-box">
+      <button type="button" id="next">Next</button>
+    </div>
+    <a href="login.html" class="lnk-login">Already have an account? Login !</a>
+
+  </form>
+
+  <form id="form2" action="{{url_for("register")}}" method="post">
+
+ <h1 style="margin-right:80px">Role Selection</h1> 
+
+    <div class="dropdown">
+      <button class="music-btn" type="button" onclick="return false;">Select Your Role</button>
+      <div class="content">
+        <div>
+        <input type="radio" id="mg1"  name="music" value="Hip hop" onclick="submitGenres()" >    
+        <label for="mg1">Admin</label>  
+        </div>
+        <div> 
+        <input type="radio" id="mg2"  name="music" value="R&B" onclick="submitGenres()" >
+        <label for="mg2">Programme Coordinator</label>
+        </div>
+        <div>
+        <input type="radio" id="mg3"  name="music" value="Rock" onclick="submitGenres()" >
+        <label for="mg3">Researcher</label>
+        <input type="radio" id="mg4"  name="music" value="Rock" onclick="submitGenres()" >
+        <label for="mg4">Student</label>
+        </div>
+       </div>
+    </div>
+
+  <form id="form3" action="{{url_for("register")}}" method="post" onsubmit="submitForm(event)" enctype="multipart/form-data">
+    <h1>Profile Setup</h1>  
+    <input type="hidden" name="hidden_username" id="hidden_username" required />
+    <input type="hidden" name="hidden_password" id="hidden_password" required/>
+    <input type="hidden" name="hidden_genres" id="hidden_genres" />
+
+
+    <input type="file" name="pfp-select"  id="file" onchange="preview()">
+    <img  src="{{ url_for('static', filename='profile_pics/default.svg')}}" id="frame" width="100px" height="100px" onclick="trigger_fileinput()"/>
+    
+    <div class="btn-box">
+      <button type="button" id="back2">Back</button>
+    </div>
+    <input  type="submit"  value="register" class="btn-register"/>
+
+  </form>  
+
+ <script>
+  function see_ps(){
+    var y=document.getElementById("image")
+    var x= document.getElementById("ps");
+    if (x.type=="password") {
+      x.type="text"; 
+      y.src="https://www.svgrepo.com/show/453440/visibility.svg"; }
+      else 
+      { x.type="password";
+        y.src="https://www.svgrepo.com/show/453442/visibility-off.svg";}  
+    } 
+
+  var form1 = document.getElementById("register_form"); 
+  var form2 = document.getElementById("form2");
+  var form3 = document.getElementById("form3");  
+  
+
+  var next = document.getElementById("next");
+  var next2 = document.getElementById("next2");
+  var back = document.getElementById("back");
+  var back2 = document.getElementById("back2");
+
+  var progress = document.getElementById("progress");
+
+  next.onclick = function(){
+    form1.style.left = "-450px";
+    form2.style.left = "40px";
+    progress.style.width ="240px"; 
+  }
+  back.onclick = function(){
+      form1.style.left = "40px";
+      form2.style.left = "450px" ;
+      progress.style.width ="120px";  
+   } 
+  
+  next2.onclick = function(){
+    form2.style.left = "-450px";
+    form3.style.left = "40px";
+    progress.style.width ="360px"; 
+  }
+
+  back2.onclick = function(){
+    form2.style.left = "40px";
+    form3.style.left = "450px" ;
+    progress.style.width ="240px";  
+ } 
+function preview() {
+
+  frame.src = URL.createObjectURL(event.target.files[0]);
+  } 
+
+ function trigger_fileinput(){
+  document.getElementById("file").click();
+
+ }
+  
+  function submitForm(event) {
+    document.getElementById("hidden_username").value = document.getElementById("username").value;
+    document.getElementById("hidden_password").value = document.getElementById("ps").value;
+    document.getElementById("hidden_image").value = document.getElementById("frame").src;
+    
+    return true;
+
+}
+
+
+function submitGenres() {
+  var selectedGenres = [];
+  if (document.getElementById("mg1").checked) {
+      selectedGenres.push(document.getElementById("mg1").value);
+  }
+  if (document.getElementById("mg2").checked) {
+      selectedGenres.push(document.getElementById("mg2").value);
+  }
+  if (document.getElementById("mg3").checked) {
+    selectedGenres.push(document.getElementById("mg3").value);
+  }
+  if (document.getElementById("mg4").checked) {
+  selectedGenres.push(document.getElementById("mg4").value);
+  }
+  if (document.getElementById("mg5").checked) {
+  selectedGenres.push(document.getElementById("mg5").value);
+  }
+  if (document.getElementById("mg6").checked) {
+    selectedGenres.push(document.getElementById("mg6").value);
+}
+  
+  // Convert array to comma-separated string
+  document.getElementById("hidden_genres").value = selectedGenres.join(',');
+}
+  </script>
