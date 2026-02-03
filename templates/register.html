@@ -1,9 +1,15 @@
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Research Web - Register</title> 
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
 <h1>Welcome to Research web!</h1>
 
 <div class="register">
-  <form id="register_form" action="{{url_for("register")}}" method="post" >
+  <form id="register_form" >
     <h1>Register</h1>
     <input type="text" name="username_register" placeholder="username" id="username" class="input-field" required autofocus maxlength="25">
     <br>
@@ -13,16 +19,16 @@
     <div class="btn-box">
       <button type="button" id="next">Next</button>
     </div>
-    <a href="login.html" class="lnk-login">Already have an account? Login !</a>
+    <a href="login" class="lnk-login">Already have an account? Login !</a>
 
   </form>
 
-  <form id="form2" action="{{url_for("register")}}" method="post">
+  <form id="form2">
 
  <h1 style="margin-right:80px">Role Selection</h1> 
 
     <div class="dropdown">
-      <button class="music-btn" type="button" onclick="return false;">Select Your Role</button>
+      <button class="role-btn" type="button" onclick="return false;">Select Your Role</button>
       <div class="content">
         <div>
         <input type="radio" id="mg1"  name="music" value="Hip hop" onclick="submitGenres()" >    
@@ -41,22 +47,35 @@
        </div>
     </div>
 
-  <form id="form3" action="{{url_for("register")}}" method="post" onsubmit="submitForm(event)" enctype="multipart/form-data">
-    <h1>Profile Setup</h1>  
-    <input type="hidden" name="hidden_username" id="hidden_username" required />
-    <input type="hidden" name="hidden_password" id="hidden_password" required/>
-    <input type="hidden" name="hidden_genres" id="hidden_genres" />
+    <div class="btn-box">
+      <button type="button" id="back" style="margin-right: 30px; margin-left: -10px;">Back</button>
+      <button type="button" id="next2" style="margin-right: 70px; margin-left: -20px;">Next</button>
+    </div> 
+    </form> 
 
+  <form id="form3" enctype="multipart/form-data">
+    <h1>Profile Setup</h1>  
 
     <input type="file" name="pfp-select"  id="file" onchange="preview()">
-    <img  src="{{ url_for('static', filename='profile_pics/default.svg')}}" id="frame" width="100px" height="100px" onclick="trigger_fileinput()"/>
+    <img  src="/static/profile_pics/default.svg" id="frame" width="100px" height="100px" onclick="trigger_fileinput()"/>
     
-    <div class="btn-box">
+     <div class="btn-box">
       <button type="button" id="back2">Back</button>
     </div>
+    
     <input  type="submit"  value="register" class="btn-register"/>
-
   </form>  
+
+  <div class="step-row">
+    <div id="progress"></div>
+    <div class="step-col"><small>Step 1</small></div>
+    <div class="step-col"><small>Step 2</small></div>
+    <div class="step-col"><small>Step 3</small></div>
+    <br>
+  </div>
+    
+</div>
+
 
  <script>
   function see_ps(){
@@ -104,6 +123,7 @@
     form3.style.left = "450px" ;
     progress.style.width ="240px";  
  } 
+
 function preview() {
 
   frame.src = URL.createObjectURL(event.target.files[0]);
@@ -113,15 +133,25 @@ function preview() {
   document.getElementById("file").click();
 
  }
-  
-  function submitForm(event) {
-    document.getElementById("hidden_username").value = document.getElementById("username").value;
-    document.getElementById("hidden_password").value = document.getElementById("ps").value;
-    document.getElementById("hidden_image").value = document.getElementById("frame").src;
-    
-    return true;
 
-}
+ 
+form3.addEventListener('submit', (e) => {
+e.preventDefault()
+
+const username = document.getElementById("username").value
+const ps = document.getElementById("ps").value
+fetch('http://localhost:3000/register', {
+    method: 'POST',
+    headers: {
+'Content-Type': 'application/json'
+},
+    body: JSON.stringify({ username, ps })
+})
+.then(response => response.json())
+.then(data => {
+console.log('Response from server', data)
+})
+})
 
 
 function submitGenres() {
@@ -144,8 +174,8 @@ function submitGenres() {
   if (document.getElementById("mg6").checked) {
     selectedGenres.push(document.getElementById("mg6").value);
 }
-  
-  // Convert array to comma-separated string
-  document.getElementById("hidden_genres").value = selectedGenres.join(',');
 }
   </script>
+
+</body>
+</html>
