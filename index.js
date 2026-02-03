@@ -24,7 +24,7 @@ if (err) return console.error(err.message);
 // db.run(dropsql);
 
 //Create table
-c_sql = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, first_name,last_name,username, password, email)';
+c_sql = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, first_name,last_name,username, password, email, role)';
 db.run(c_sql);
 
 // Routes
@@ -35,10 +35,10 @@ res.sendFile(path.join(__dirname, 'templates', 'register.html'));
 })
 
 app.post('/register', (req, res) => {
-    const{username,ps} = req.body;
+const{username,ps,role} = req.body;
 //Insert into table
-i_sql =  'INSERT INTO users(first_name, last_name, username, password, email) VALUES (?,?,?,?,?)';
-db.run(i_sql, ['ok','lol',username,ps,'mike@gmail.com'] ,(err) => {
+i_sql =  'INSERT INTO users(first_name, last_name, username, password, email, role) VALUES (?,?,?,?,?,?)';
+db.run(i_sql, ['ok','lol',username,ps,'mike@gmail.com', role] ,(err) => {
 if (err) {
     console.error(err.message);
     return res.status(500).send('Database error');

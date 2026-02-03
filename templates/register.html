@@ -31,18 +31,18 @@
       <button class="role-btn" type="button" onclick="return false;">Select Your Role</button>
       <div class="content">
         <div>
-        <input type="radio" id="mg1"  name="music" value="Hip hop" onclick="submitGenres()" >    
-        <label for="mg1">Admin</label>  
+        <input type="radio" id="role1"  name="role" value="Admin" onclick="submitRole()" >    
+        <label for="role1">Admin</label>  
         </div>
         <div> 
-        <input type="radio" id="mg2"  name="music" value="R&B" onclick="submitGenres()" >
-        <label for="mg2">Programme Coordinator</label>
+        <input type="radio" id="role2"  name="role" value="Programme Coordinator" onclick="submitRole()" >
+        <label for="role2">Programme Coordinator</label>
         </div>
         <div>
-        <input type="radio" id="mg3"  name="music" value="Rock" onclick="submitGenres()" >
-        <label for="mg3">Researcher</label>
-        <input type="radio" id="mg4"  name="music" value="Rock" onclick="submitGenres()" >
-        <label for="mg4">Student</label>
+        <input type="radio" id="role3"  name="role" value="Researcher" onclick="submitRole()" >
+        <label for="role3">Researcher</label>
+        <input type="radio" id="role4"  name="role" value="Student" onclick="submitRole()" >
+        <label for="role4">Student</label>
         </div>
        </div>
     </div>
@@ -134,47 +134,40 @@ function preview() {
 
  }
 
- 
+
+function submitRole() {
+  if (document.getElementById("role1").checked) {
+     return document.getElementById("role1").value;
+  }
+  if (document.getElementById("role2").checked) {
+      return document.getElementById("role2").value;
+  }
+  if (document.getElementById("role3").checked) {
+    return document.getElementById("role3").value;
+  }
+  if (document.getElementById("role4").checked) {
+  return document.getElementById("role4").value;
+  }
+  
+}
 form3.addEventListener('submit', (e) => {
 e.preventDefault()
 
 const username = document.getElementById("username").value
 const ps = document.getElementById("ps").value
+const role = submitRole();
 fetch('http://localhost:3000/register', {
     method: 'POST',
     headers: {
 'Content-Type': 'application/json'
 },
-    body: JSON.stringify({ username, ps })
+    body: JSON.stringify({ username, ps, role })
 })
 .then(response => response.json())
 .then(data => {
 console.log('Response from server', data)
 })
 })
-
-
-function submitGenres() {
-  var selectedGenres = [];
-  if (document.getElementById("mg1").checked) {
-      selectedGenres.push(document.getElementById("mg1").value);
-  }
-  if (document.getElementById("mg2").checked) {
-      selectedGenres.push(document.getElementById("mg2").value);
-  }
-  if (document.getElementById("mg3").checked) {
-    selectedGenres.push(document.getElementById("mg3").value);
-  }
-  if (document.getElementById("mg4").checked) {
-  selectedGenres.push(document.getElementById("mg4").value);
-  }
-  if (document.getElementById("mg5").checked) {
-  selectedGenres.push(document.getElementById("mg5").value);
-  }
-  if (document.getElementById("mg6").checked) {
-    selectedGenres.push(document.getElementById("mg6").value);
-}
-}
   </script>
 
 </body>
