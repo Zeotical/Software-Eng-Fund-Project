@@ -45,23 +45,7 @@ if (err) {
 }
  res.send('User registered'); //send response
 
-});
-//  if (role == 'Admin') {
-//     res.redirect('/admin');
-//   }
-//   if (role == 'Student') {
-//         res.redirect('/student');
-//   }
-//   if (role == 'Researcher') {
-//         res.redirect('/researcher');
-//   }
-//   if (role == 'Programme Coordinator') {
-//         res.redirect('/prog_coord');
-//   }
-//  res.allNeededMsgs {
-// res.send('User registered'); //send response
-
-//  }
+})
 })
 
 //Login Route (GET + POST)

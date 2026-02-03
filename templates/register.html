@@ -56,7 +56,7 @@
   <form id="form3" enctype="multipart/form-data">
     <h1>Profile Setup</h1>  
 
-    <!-- <input type="file" name="pfp-select"  id="file" onchange="preview()"> -->
+    <input type="file" name="pfp-select"  id="file" onchange="preview()">
     <img  src="/static/profile_pics/default.svg" id="frame" width="100px" height="100px" onclick="trigger_fileinput()"/>
     
      <div class="btn-box">
@@ -151,16 +151,6 @@ function submitRole() {
   
 }
 
-// showDashboard(){
-
-//   if (submitRole() == 'Admin') {
-//     redirect to admin dashboard
-//   }
-//   if (submitRole() == 'Student') {}
-//   if (submitRole() == 'Researcher') {}
-//   if (submitRole() == 'Programme Coordinator') {}
-
-// }
 form3.addEventListener('submit', (e) => {
 e.preventDefault()
 
@@ -179,9 +169,9 @@ fetch('http://localhost:3000/register', {
 console.log('Response from server', data)
 // showDashboard();
   if (role == 'Admin') window.location.assign("/admin");
-  else if (role == 'Student') window.location.assign("/admin");
-  else if (role == 'Researcher') window.location.assign("/admin");
-  else if (role == 'Programme Coordinator') window.location.assign("/admin");
+  else if (role == 'Student') window.location.assign("/student");
+  else if (role == 'Researcher') window.location.assign("/researcher");
+  else if (role == 'Programme Coordinator') window.location.assign("/prog_coord");
   
 })
 })
