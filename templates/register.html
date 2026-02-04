@@ -167,7 +167,6 @@ fetch('http://localhost:3000/register', {
 .then(response => response.text())
 .then(data => {
 console.log('Response from server', data)
-// showDashboard();
   if (role == 'Admin') window.location.assign("/admin");
   else if (role == 'Student') window.location.assign("/student");
   else if (role == 'Researcher') window.location.assign("/researcher");

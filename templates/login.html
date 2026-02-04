@@ -1,1 +1,65 @@
-<h1>Welcome to login</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Research Web - Register</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <h1>Welcome to Login!</h1>
+
+    <div class="login">
+        <h1> Login</h1>
+        <form id="auth_form">
+            <input type="text" name="username" placeholder="username" id ="username" class="input-field" required autofocus>
+            <br>
+            <input type="password" name="password" placeholder="password" id="ps" class="input-field" required
+                autofocus>
+            <input type="image" src="https://www.svgrepo.com/show/453442/visibility-off.svg"
+                onclick="see_ps();return false;" id="lgimage">
+            <input type="submit" value="login" class="btn-login" />
+        </form>
+    </div>
+</body>
+
+</html>
+
+<script>
+    function see_ps() {
+        var y = document.getElementById("lgimage")
+        var x = document.getElementById("ps");
+        if (x.type == "password") {
+            x.type = "text";
+            y.src = "https://www.svgrepo.com/show/453440/visibility.svg";
+        }
+        else {
+            x.type = "password";
+            y.src = "https://www.svgrepo.com/show/453442/visibility-off.svg";
+        }
+    }
+
+    auth_form.addEventListener('submit', (e) => {
+        e.preventDefault()
+
+        const username = document.getElementById("username").value
+        const ps = document.getElementById("ps").value
+        fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, ps})
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Response from server', data)
+                if (data == 'Admin') window.location.assign("/admin");
+                else if (data == 'Student') window.location.assign("/student");
+                else if (data == 'Researcher') window.location.assign("/researcher");
+                else if (data == 'Programme Coordinator') window.location.assign("/prog_coord");
+
+            })
+    })
+</script>

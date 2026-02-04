@@ -20,8 +20,8 @@ if (err) return console.error(err.message);
 });
 
 //Drop table
-dropsql = 'DROP TABLE users'; // alt db.run("DROP TABLE users");
-db.run(dropsql);
+// dropsql = 'DROP TABLE users'; // alt db.run("DROP TABLE users");
+// db.run(dropsql);
 
 //Create table
 c_sql = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, first_name,last_name,username, password, email, role)';
@@ -51,6 +51,35 @@ if (err) {
 //Login Route (GET + POST)
 app.get('/login', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'login.html'));
+// const {username,ps,role} = req.body;
+// if(username == this.username & ps == this.ps) res.send('User authenticated');
+})
+
+app.post('/login', (req, res) => {
+    const { username, ps } = req.body;
+//query the data
+ auth_sql = 'SELECT * FROM users WHERE username = ?';
+ db.get(auth_sql, [username], (err, row) => {
+ if (err) return console.error("User not found");
+ else if (row.password == ps) res.send(row.role)
+// rows.forEach((row) => {
+// console.log(row);
+// });
+});
+
+// const user = users.find(user => users.name ,req.body.name)
+// if (user == null) {
+// return res.status(400).send('Cannot find user');
+// }
+// try {
+// if(compare(req.body.password, user.password)) {
+// res.send('Success')
+// } else {
+// res.send('Not Allowed')
+// }
+// } catch {
+// res.status(500).send()
+// }
 })
 
 //Admin Route (GET + POST)
