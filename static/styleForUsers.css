@@ -1,0 +1,60 @@
+/* RESEARCHER PAGE */
+* {
+margin:0;
+padding:0;
+}
+
+html {
+    font-family:tahoma;
+    scroll-behavior:smooth;
+}
+
+h1{
+text-align:center;
+position:fixed;
+top:0; Left:35%;
+color:purple;
+}
+
+ul{
+List-style:none;
+height:50px;
+width:100%;
+position:fixed;
+top:0; Left:0;
+background:crimson;
+box-shadow:2px 0px 5px black;
+display:flex;
+justify-content: space-around;
+}
+
+ul li{
+margin:5px;
+padding:5px;
+}
+
+ul li a {
+color:white;
+text-decoration: none;
+font-size:20px;
+padding:5px;
+}
+
+ul li a:hover{
+background:white;
+color:blue;
+}
+
+.content{
+display:flex;
+width:500%;
+}
+
+section{
+height:100vh;
+width:100vw;
+display:flex;
+align-items: center;
+justify-content:center;
+text-transform:uppercase;
+}
