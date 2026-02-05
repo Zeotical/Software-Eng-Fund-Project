@@ -1,4 +1,11 @@
 {
+"name": "swe",
+"version": "1.0.0",
+"description": "",
+"main": "index.js",
+"scripts": {
+"devStart": "nodemon server.js"
+},
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",

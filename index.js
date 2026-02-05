@@ -15,17 +15,51 @@ const sqlite3= require('sqlite3').verbose();
 let sql;
 
 //connect to DB
-const db = new sqlite3.Database("./test.db", sqlite3.OPEN_READWRITE, (err) => {
-if (err) return console.error(err.message);
+const db = new sqlite3.Database("./rpsm.db", sqlite3.OPEN_READWRITE, (err) => {
+if (err) return console.error(err.message); // rpms == research publication system management
 });
 
 //Drop table
 // dropsql = 'DROP TABLE users'; // alt db.run("DROP TABLE users");
 // db.run(dropsql);
+// dropsql = 'DROP TABLE publication'; // alt db.run("DROP TABLE users");
+// db.run(dropsql);
+// dropsql = 'DROP TABLE proof'; // alt db.run("DROP TABLE users");
+// db.run(dropsql);
+//enable forgien keys
+db.run("PRAGMA foreign_keys = ON");
 
-//Create table
-c_sql = 'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, first_name,last_name,username, password, email, role)';
-db.run(c_sql);
+//Create tables
+userTable_sql = 
+`CREATE TABLE IF NOT EXISTS users(
+id INTEGER PRIMARY KEY, 
+name,
+username,
+password, 
+email, 
+role)`;
+db.run(userTable_sql);
+
+// AUTOINCREMENT unique id no reusing
+publicationTable_sql = 
+`CREATE TABLE IF NOT EXISTS publication(
+publicationID INTEGER PRIMARY KEY AUTOINCREMENT, 
+title,
+status,
+researcherID INTEGER, 
+publicationDate DATE,
+CONSTRAINT FK_researcher_id FOREIGN KEY (researcherID) REFERENCES users(id)
+)`;
+db.run(publicationTable_sql);
+
+proofTable_sql = 
+`CREATE TABLE IF NOT EXISTS proof(
+proofID INTEGER PRIMARY KEY, 
+publicationID INTEGER, 
+uploadDate DATE,
+CONSTRAINT FK_publication_id FOREIGN KEY (publicationID) REFERENCES publication(publicationID)
+)`;
+db.run(proofTable_sql);
 
 // Routes
 
@@ -37,7 +71,7 @@ res.sendFile(path.join(__dirname, 'templates', 'register.html'));
 app.post('/register', (req, res) => {
 const{username,ps,role} = req.body;
 //Insert into table
-i_sql =  'INSERT INTO users(first_name, last_name, username, password, email, role) VALUES (?,?,?,?,?,?)';
+i_sql =  'INSERT INTO users(name, username, password, email, role) VALUES (?,?,?,?,?)';
 db.run(i_sql, ['ok','lol',username,ps,'mike@gmail.com', role] ,(err) => {
 if (err) {
     console.error(err.message);
@@ -51,8 +85,7 @@ if (err) {
 //Login Route (GET + POST)
 app.get('/login', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'login.html'));
-// const {username,ps,role} = req.body;
-// if(username == this.username & ps == this.ps) res.send('User authenticated');
+
 })
 
 app.post('/login', (req, res) => {
@@ -62,25 +95,15 @@ app.post('/login', (req, res) => {
  db.get(auth_sql, [username], (err, row) => {
  if (err) return console.error("User not found");
  else if (row.password == ps) res.send(row.role)
-// rows.forEach((row) => {
-// console.log(row);
-// });
 });
-
-// const user = users.find(user => users.name ,req.body.name)
-// if (user == null) {
-// return res.status(400).send('Cannot find user');
-// }
-// try {
-// if(compare(req.body.password, user.password)) {
-// res.send('Success')
-// } else {
-// res.send('Not Allowed')
-// }
-// } catch {
-// res.status(500).send()
-// }
 })
+
+//Profile Route (GET + POST)
+app.get('/profile', (req, res) => {
+res.sendFile(path.join(__dirname, 'templates', 'profile.html'));
+
+})
+
 
 //Admin Route (GET + POST)
 app.get('/admin', (req, res) => {
@@ -126,7 +149,3 @@ console.log('The server is running')
 // console.log(row);
 // });
 // });
-
-// //Drop table
-// dropsql = 'DROP TABLE users'; // alt db.run("DROP TABLE users");
-// db.run(dropsql);
