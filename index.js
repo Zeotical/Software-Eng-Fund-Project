@@ -1,6 +1,7 @@
 console.log('hello world')
 const cors = require('cors');
 const path = require('path');
+const session = require('express-session');
 const multer = require('multer');
 
 const fileStorage = multer.diskStorage({
@@ -18,9 +19,6 @@ cb(null,file.originalname); //or cb(null, new Date().toISOString() + '-' + file.
 // else {
 // cb(null, false); } 
 // }
-
-// const upload = multer({dest: 'static/publications'});
-
 const upload = multer({
 storage: fileStorage //,
 // limits: {
@@ -33,7 +31,11 @@ const app = express();
 app.use(cors()) ; //allow access from any ip
 app.use('/static', express.static('static')); //serving files from static
 app.use(express.json()); //converts raw JSON data it into a usable js obj
-
+app.use(session({
+secret: 'secret-key',
+resave: false,
+saveUninitialized: false,
+}));
 // app.use(multer({storage: fileStorage, fileFilter:fileFilter }).single('publication_file'));
 
 //db setup
@@ -72,7 +74,7 @@ publicationTable_sql =
 `CREATE TABLE IF NOT EXISTS publication(
 publicationID INTEGER PRIMARY KEY AUTOINCREMENT, 
 title,
-status,
+status DEFAULT pending,
 researcherID INTEGER, 
 publicationDate DATE,
 publicationFilePath,
@@ -98,14 +100,24 @@ res.sendFile(path.join(__dirname, 'templates', 'register.html'));
 })
 
 app.post('/register', (req, res) => {
+    // req.session.destroy();
 const{username,ps,role} = req.body;
+// db.get('SELECT id FROM users WHERE username = ?', [username], (err, row) => {
+//     if (row) {
+//         req.session.userID = row.id; 
+//     }
+// });
+
 //Insert into table
 i_sql =  'INSERT INTO users(name, username, password, email, role) VALUES (?,?,?,?,?)';
-db.run(i_sql, ['lol',username,ps,'mike@gmail.com', role] ,(err) => {
+db.run(i_sql, ['lol',username,ps,'mike@gmail.com', role] ,function(err)  {
 if (err) {
     console.error(err.message);
     return res.status(500).send('Database error');
 }
+
+req.session.userID = this.lastID; 
+console.log(this.lastID);
  res.send('User registered'); //send response
 
 })
@@ -123,7 +135,9 @@ app.post('/login', (req, res) => {
  auth_sql = 'SELECT * FROM users WHERE username = ?';
  db.get(auth_sql, [username], (err, row) => {
  if (err) return console.error("User not found");
- else if (row.password == ps) res.send(row.role)
+ else if (row.password == ps) {
+    req.session.userID = row.id;
+    res.send(row.role)}
 });
 })
 
@@ -150,7 +164,11 @@ res.sendFile(path.join(__dirname, 'templates', 'researcher.html'));
 })
 
 app.post('/researcher' ,upload.any(), (req, res) => {
-     const title = req.body.title;
+const title = req.body.title_research;
+const researcher_id = req.session.userID;
+console.log(researcher_id);
+// const  description = req.body.publication_descp;
+
     // const publication_file = req.file ;
 //     if(!publication_file) {
 //         return res.status(422).render('researcher', {
@@ -177,8 +195,8 @@ const publication_file_path = req.files[0].path; //req.file.path is for a single
 //  else if (row.password == ps) res.send(row.role)
 // });
 //Insert into table
-i_sql =  'INSERT INTO publication(title, publicationDate, publicationFilePath) VALUES (?,?,?)';
-db.run(i_sql, [title,"date",publication_file_path] ,(err) => {
+i_sql =  'INSERT INTO publication(title, researcherID, publicationDate, publicationFilePath) VALUES (?,?,?,?)';
+db.run(i_sql, [title,researcher_id,"date",publication_file_path] ,(err) => {
 if (err) {
     console.error(err.message);
     return res.status(500).send('Database error');
