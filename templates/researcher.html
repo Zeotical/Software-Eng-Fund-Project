@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/static/styleForUsers.css">
 </head>
 <body>
-    
+
 <ul>
 <li><a href="#sectionl">section1</a></li>
 <li><a href="#section2">section2</a></li>
@@ -16,8 +16,19 @@
 </ul>
 <div class="content">
 <section id="sectionl">    
-<h2>section1</h2>
-    <p>heldiij</p>
+<!-- <h2>section1</h2> -->
+    <h1>Submit New Publication</h1>        
+
+<!-- <div class="register"> -->
+  <form id="publication_submission_form" enctype="multipart/form-data" > <!-- multer pkg will be looking for data req from the ennnctype so that it can parse it -->
+   <input type="text" name="title_research" placeholder="Title of publication" id="title" class="input-field" required autofocus maxlength="25">
+    <br>
+    <input type="file" name="publication_file"  id="publication_file" >
+    <input  type="submit"  value="Submit" class="btn-register"/>
+
+  </form>
+<!-- </div> -->
+
 </section>
 <section id="section2">
 <h2>section2</h2>
@@ -36,3 +47,23 @@
 
 </body>
 </html>
+
+<script>
+publication_submission_form.addEventListener('submit', (e) => {
+e.preventDefault()
+const form_data = new FormData(publication_submission_form);
+// const title = document.getElementById("title").value
+
+// const publication_file = document.getElementById("file").value
+fetch('http://localhost:3000/researcher', {
+    method: 'POST',
+    body: form_data
+})
+.then(response => response.text())
+.then(data => {
+console.log('Response from server', data)
+
+})
+})
+
+</script>
