@@ -16,7 +16,6 @@
 </ul>
 <div class="content">
 <section id="sectionl">    
-<!-- <h2>section1</h2> -->
     <h1>Submit New Publication</h1>        
 
 <!-- <div class="register"> -->
@@ -57,7 +56,8 @@ const form_data = new FormData(publication_submission_form);
 // const publication_file = document.getElementById("file").value
 fetch('http://localhost:3000/researcher', {
     method: 'POST',
-    body: form_data
+    body: form_data,
+    credentials: 'include'
 })
 .then(response => response.text())
 .then(data => {
