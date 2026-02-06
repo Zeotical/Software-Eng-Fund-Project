@@ -11,9 +11,9 @@ html {
 
 h1{
 text-align:center;
-position:fixed;
-top:0; Left:35%;
-color:purple;
+position: absolute;
+top:10%; Left:35%;
+/* color:purple; */
 }
 
 ul{

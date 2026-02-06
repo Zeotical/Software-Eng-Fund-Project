@@ -3,13 +3,13 @@ const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
 
-// const fileStorage = multer.diskStorage({
-// destination: (req, file, cb) => {
-// cb(null, 'images'); },
-// filename: (req, file, cb) => {
-// cb(null, new Date().toISOString() + '-' + file.originalname); //or cb(null, new Date().toISOString() + '-' + file.originalname); 
-// }
-// });
+const fileStorage = multer.diskStorage({
+destination: (req, file, cb) => { //cb == callback
+cb(null, 'static/publications'); },
+filename: (req, file, cb) => {
+cb(null,file.originalname); //or cb(null, new Date().toISOString() + '-' + file.originalname); 
+}
+});
 
 // const fileFilter = (req, file, cb) => {
 // if (
@@ -19,7 +19,14 @@ const multer = require('multer');
 // cb(null, false); } 
 // }
 
-const upload = multer({dest: 'static/publications'});
+// const upload = multer({dest: 'static/publications'});
+
+const upload = multer({
+storage: fileStorage //,
+// limits: {
+// fileSize: 1048576, //1 Mbn 
+// },
+})
 //express set up 
 const express = require('express');
 const app = express();
@@ -94,7 +101,7 @@ app.post('/register', (req, res) => {
 const{username,ps,role} = req.body;
 //Insert into table
 i_sql =  'INSERT INTO users(name, username, password, email, role) VALUES (?,?,?,?,?)';
-db.run(i_sql, ['ok','lol',username,ps,'mike@gmail.com', role] ,(err) => {
+db.run(i_sql, ['lol',username,ps,'mike@gmail.com', role] ,(err) => {
 if (err) {
     console.error(err.message);
     return res.status(500).send('Database error');
@@ -143,8 +150,8 @@ res.sendFile(path.join(__dirname, 'templates', 'researcher.html'));
 })
 
 app.post('/researcher' ,upload.any(), (req, res) => {
-    const title = req.body;
-    const publication_file = req.file ;
+     const title = req.body.title;
+    // const publication_file = req.file ;
 //     if(!publication_file) {
 //         return res.status(422).render('researcher', {
 //         pageTitle: 'Researcher Dashboard',
@@ -160,7 +167,7 @@ app.post('/researcher' ,upload.any(), (req, res) => {
 // });
 // }
 
-const publication_file_path = publication_file.path;
+const publication_file_path = req.files[0].path; //req.file.path is for a single not any
 
 //     const { username, ps } = req.body;
 // //query the data
@@ -170,8 +177,8 @@ const publication_file_path = publication_file.path;
 //  else if (row.password == ps) res.send(row.role)
 // });
 //Insert into table
-i_sql =  'INSERT INTO publication(researcherID, title, publicationDate, publicationFilePath) VALUES (?,?,?)';
-db.run(i_sql, ["id", title,"date",publication_file_path] ,(err) => {
+i_sql =  'INSERT INTO publication(title, publicationDate, publicationFilePath) VALUES (?,?,?)';
+db.run(i_sql, [title,"date",publication_file_path] ,(err) => {
 if (err) {
     console.error(err.message);
     return res.status(500).send('Database error');
