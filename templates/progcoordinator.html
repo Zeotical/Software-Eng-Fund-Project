@@ -1,1 +1,425 @@
-<h1>Welcome to Programme Coordinator dashboard</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programme Coordinator Dashboard</title>
+    <link rel="stylesheet" href="/static/progcoordinatorstyle.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2><i class="fas fa-university"></i> Academic Publication System</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#review" class="nav-link"><i class="fas fa-file-alt"></i> Review</a>
+                <a href="#analytics" class="nav-link"><i class="fas fa-chart-bar"></i> Analytics</a>
+                <a href="#guidelines" class="nav-link"><i class="fas fa-book"></i> Guidelines</a>
+                <div class="user-menu">
+                    <span class="username" id="username">Dr. Coordinator</span>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="dashboard-header">
+                <h1>Welcome, <span id="coordinatorName">Programme Coordinator</span></h1>
+                <p>Manage publications, review submissions, and monitor research KPIs</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card pending">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingCount">12</h3>
+                        <p>Pending Reviews</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card approved">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="approvedCount">48</h3>
+                        <p>Approved Publications</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card rejected">
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="rejectedCount">5</h3>
+                        <p>Rejected Publications</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card changes">
+                    <div class="stat-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="changesCount">8</h3>
+                        <p>Requires Changes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="navigateTo('review')">
+                        <i class="fas fa-file-check"></i>
+                        <span>Review Submissions</span>
+                    </button>
+                    <button class="action-btn" onclick="navigateTo('analytics')">
+                        <i class="fas fa-chart-line"></i>
+                        <span>View Analytics</span>
+                    </button>
+                    <button class="action-btn" onclick="navigateTo('guidelines')">
+                        <i class="fas fa-edit"></i>
+                        <span>Update Guidelines</span>
+                    </button>
+                    <button class="action-btn" onclick="checkMissingData()">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Check Missing Data</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Submissions -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-tasks"></i> Recent Submissions</h2>
+                    <button class="view-all" onclick="navigateTo('review')">View All <i class="fas fa-arrow-right"></i></button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Researcher</th>
+                                <th>Type</th>
+                                <th>Submitted</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentSubmissions">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bell"></i> Recent Notifications</h2>
+                    <button class="mark-all-read" onclick="markAllAsRead()">Mark All as Read</button>
+                </div>
+                <div class="activities-list" id="notificationsList">
+                    <!-- Notifications will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Review Section -->
+        <section id="review" class="section">
+            <div class="section-header">
+                <h1><i class="fas fa-file-alt"></i> Review Submissions</h1>
+                <div class="search-box">
+                    <input type="text" id="searchPublications" placeholder="Search publications..." onkeyup="filterPublications()">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="filterStatus">Status:</label>
+                    <select id="filterStatus" onchange="filterPublications()">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending Review</option>
+                        <option value="changes">Changes Required</option>
+                        <option value="resubmitted">Resubmitted</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterType">Type:</label>
+                    <select id="filterType" onchange="filterPublications()">
+                        <option value="all">All Types</option>
+                        <option value="journal">Journal Article</option>
+                        <option value="conference">Conference Paper</option>
+                        <option value="book">Book Chapter</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterDepartment">Department:</label>
+                    <select id="filterDepartment" onchange="filterPublications()">
+                        <option value="all">All Departments</option>
+                        <option value="cs">Computer Science</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="science">Science</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="publications-list" id="publicationsList">
+                <!-- Publications will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <div class="section-header">
+                <h1><i class="fas fa-chart-bar"></i> Analytics Dashboard</h1>
+                <div class="date-range">
+                    <label for="dateRange">Date Range:</label>
+                    <select id="dateRange" onchange="updateCharts()">
+                        <option value="current_year">Current Year</option>
+                        <option value="last_year">Last Year</option>
+                        <option value="last_6_months">Last 6 Months</option>
+                        <option value="all_time">All Time</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Analytics Filters -->
+            <div class="filters-card">
+                <h3><i class="fas fa-filter"></i> Filter Data</h3>
+                <div class="filter-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="analyticsYear">Year:</label>
+                            <select id="analyticsYear" onchange="updateCharts()">
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="all">All Years</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="analyticsDepartment">Department:</label>
+                            <select id="analyticsDepartment" onchange="updateCharts()">
+                                <option value="all">All Departments</option>
+                                <option value="cs">Computer Science</option>
+                                <option value="engineering">Engineering</option>
+                                <option value="science">Science</option>
+                                <option value="business">Business</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="analyticsType">Publication Type:</label>
+                            <select id="analyticsType" onchange="updateCharts()">
+                                <option value="all">All Types</option>
+                                <option value="journal">Journal Article</option>
+                                <option value="conference">Conference Paper</option>
+                                <option value="book">Book Chapter</option>
+                                <option value="thesis">Thesis</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn-primary" onclick="updateCharts()">
+                            <i class="fas fa-refresh"></i> Refresh Charts
+                        </button>
+                        <button class="btn-secondary" onclick="exportReport()">
+                            <i class="fas fa-file-export"></i> Export Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-pie"></i> Publications by Type</h3>
+                    <canvas id="typeChart"></canvas>
+                </div>
+                
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-line"></i> Monthly Submissions</h3>
+                    <canvas id="trendChart"></canvas>
+                </div>
+                
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-bar"></i> Approval Rate by Department</h3>
+                    <canvas id="departmentChart"></canvas>
+                </div>
+                
+                <div class="chart-card">
+                    <h3><i class="fas fa-percentage"></i> Status Distribution</h3>
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h4><i class="fas fa-file-alt"></i> Total Publications</h4>
+                    <h2 id="totalPublications">125</h2>
+                </div>
+                
+                <div class="summary-card">
+                    <h4><i class="fas fa-percentage"></i> Approval Rate</h4>
+                    <h2 id="approvalRate">78%</h2>
+                </div>
+                
+                <div class="summary-card">
+                    <h4><i class="fas fa-users"></i> Active Researchers</h4>
+                    <h2 id="activeResearchers">42</h2>
+                </div>
+                
+                <div class="summary-card">
+                    <h4><i class="fas fa-calendar-alt"></i> Avg Review Time</h4>
+                    <h2 id="avgReviewTime">3.2 days</h2>
+                </div>
+            </div>
+
+            <!-- Detailed Table -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-table"></i> Detailed Statistics</h2>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Department</th>
+                                <th>Submitted</th>
+                                <th>Approved</th>
+                                <th>Rejected</th>
+                                <th>Pending</th>
+                                <th>Approval Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analyticsTable">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guidelines Section -->
+        <section id="guidelines" class="section">
+            <div class="section-header">
+                <h1><i class="fas fa-book"></i> Publication Guidelines</h1>
+                <button class="btn-primary" onclick="showAddGuidelineModal()">
+                    <i class="fas fa-plus"></i> Add New Guideline
+                </button>
+            </div>
+
+            <div class="guidelines-container">
+                <div class="guidelines-list" id="guidelinesList">
+                    <!-- Guidelines will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals -->
+    <!-- Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Review Publication</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="publication-details" id="reviewPublicationDetails">
+                    <!-- Details populated by JavaScript -->
+                </div>
+                
+                <div class="decision-panel">
+                    <h3>Decision</h3>
+                    <div class="decision-options">
+                        <button class="decision-btn approve" onclick="makeDecision('approve')">
+                            <i class="fas fa-check"></i> Approve
+                        </button>
+                        <button class="decision-btn reject" onclick="makeDecision('reject')">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                        <button class="decision-btn request-changes" onclick="makeDecision('changes_required')">
+                            <i class="fas fa-edit"></i> Request Changes
+                        </button>
+                    </div>
+                    
+                    <div class="feedback-section">
+                        <label for="feedback">Feedback/Comments:</label>
+                        <textarea id="feedback" placeholder="Enter your feedback for the researcher..." rows="4"></textarea>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button class="btn-primary" onclick="submitDecision()">Submit Decision</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Guideline Modal -->
+    <div id="addGuidelineModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Guideline</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="guidelineForm" onsubmit="addGuideline(event)">
+                    <div class="form-group">
+                        <label for="guidelineTitle">Title:</label>
+                        <input type="text" id="guidelineTitle" required placeholder="Enter guideline title">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guidelineContent">Content:</label>
+                        <textarea id="guidelineContent" required rows="8" placeholder="Enter guideline content..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guidelineCategory">Category:</label>
+                        <select id="guidelineCategory">
+                            <option value="general">General</option>
+                            <option value="formatting">Formatting</option>
+                            <option value="ethics">Ethics</option>
+                            <option value="submission">Submission Process</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Add Guideline</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Academic Publication and Research Tracking System &copy; 2024</p>
+    </footer>
+
+    <script src="/static/progCoordinator.js"></script>
+</body>
+</html>
