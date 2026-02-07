@@ -215,6 +215,87 @@ app.listen(3000, () => {
 console.log('The server is running')
 })
 
+// ========== ADDED ROUTES START HERE ==========
+
+// Home route - redirect based on if user is logged in (optional)
+app.get('/', (req, res) => {
+    res.send(`
+        <h1>Academic Publication System</h1>
+        <p>Server is running! Choose a page:</p>
+        <ul>
+            <li><a href="/prog_coord">Programme Coordinator Dashboard</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/admin">Admin</a></li>
+            <li><a href="/researcher">Researcher</a></li>
+            <li><a href="/student">Student</a></li>
+        </ul>
+        <p><small>Note: Programme Coordinator page is accessible without login for testing</small></p>
+    `);
+});
+
+// Test route to check if server is working
+app.get('/test', (req, res) => {
+    res.json({ 
+        status: 'ok', 
+        message: 'Server is working!',
+        timestamp: new Date().toISOString()
+    });
+});
+
+// API endpoint to get current user (for frontend)
+app.get('/api/current-user', (req, res) => {
+    // Mock user data for testing Programme Coordinator
+    res.json({ 
+        user: {
+            id: 1,
+            name: "Dr. Programme Coordinator",
+            username: "coordinator",
+            email: "coordinator@university.edu",
+            role: "programme_coordinator",
+            department: "Computer Science"
+        }
+    });
+});
+
+// API endpoint for mock publications data (for Programme Coordinator frontend)
+app.get('/api/publications/pending', (req, res) => {
+    // Mock data for Programme Coordinator frontend
+    const mockPublications = [
+        {
+            id: 1,
+            title: "Machine Learning in Healthcare: A Comprehensive Review",
+            researcher: "Dr. Sarah Johnson",
+            department: "Computer Science",
+            type: "Journal Article",
+            submitted: "2024-03-15",
+            status: "pending",
+            abstract: "This paper reviews the latest machine learning applications in healthcare..."
+        },
+        {
+            id: 2,
+            title: "Blockchain Technology for Secure Financial Transactions",
+            researcher: "Prof. Michael Chen",
+            department: "Business",
+            type: "Conference Paper",
+            submitted: "2024-03-14",
+            status: "pending",
+            abstract: "Exploring blockchain applications in modern financial systems..."
+        }
+    ];
+    res.json({ publications: mockPublications });
+});
+
+// Catch-all for 404 errors (add at the very end, before app.listen)
+app.use((req, res) => {
+    res.status(404).send(`
+        <h1>404 - Page Not Found</h1>
+        <p>The page "${req.url}" was not found.</p>
+        <a href="/">Go back to home</a>
+    `);
+});
+
+// ========== ADDED ROUTES END HERE ==========
 
 // //update data
 // update_sql= 'UPDATE users SET first_name = ? WHERE id = ?';
