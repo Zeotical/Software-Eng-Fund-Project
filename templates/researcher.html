@@ -21,8 +21,9 @@
               <a href="#section3" class ="nav-link">section3</a>
               <a href="#section4" class ="nav-link">section4</a>
               <a href="#section5" class ="nav-link">section5</a>
+
                 <div class="user-menu">
-                    <span class="username" id="username">Researcher</span>
+                    <span class="username" id="username" onclick="profile()"></span>
                     <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
                 </div>
             </div>
@@ -35,7 +36,7 @@
         <!-- Dashboard Section -->
         <section id="dashboard" class="section active">
             <div class="dashboard-header">
-                <h1>Welcome, <span id="coordinatorName">Researcher</span></h1>
+                <h1>Welcome, <span id="researcherName"></span></h1>
                 <p>Manage publications, review submissions, and monitor research KPIs</p>
             </div>
 
@@ -176,5 +177,43 @@ console.log('Response from server', data)
 
 })
 })
+
+//Fetching user info to be displayed
+ fetch('http://localhost:3000/user-info', {
+    method: 'POST',
+    headers: {
+'Content-Type': 'application/json'
+},
+})
+.then(response => response.json())
+.then(data => {
+console.log('Response from server', data)
+document.getElementById('researcherName').innerText = `${data.user_info.name}`;
+document.getElementById('username').innerText = `${data.user_info.username}`;
+});
+
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        // In real implementation, call logout API
+        window.location.href = '/login';
+    }
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    const modals = document.querySelectorAll('.modal.active');
+    modals.forEach(modal => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
+  
+function profile() {
+        // In real implementation, call logout API
+        window.location.href = '/profile';
+}
+
+
 
 </script>

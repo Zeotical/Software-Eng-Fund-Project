@@ -66,7 +66,8 @@ name,
 username,
 password, 
 email, 
-role)`;
+role,
+bio)`;
 db.run(userTable_sql);
 
 // AUTOINCREMENT unique id no reusing
@@ -100,23 +101,20 @@ res.sendFile(path.join(__dirname, 'templates', 'register.html'));
 })
 
 app.post('/register', (req, res) => {
-    // req.session.destroy();
-const{username,ps,role} = req.body;
-// db.get('SELECT id FROM users WHERE username = ?', [username], (err, row) => {
-//     if (row) {
-//         req.session.userID = row.id; 
-//     }
-// });
-
+const{name,username,ps,role} = req.body;
 //Insert into table
 i_sql =  'INSERT INTO users(name, username, password, email, role) VALUES (?,?,?,?,?)';
-db.run(i_sql, ['lol',username,ps,'mike@gmail.com', role] ,function(err)  {
+db.run(i_sql, [name,username,ps,'mike@gmail.com', role] ,function(err)  {
 if (err) {
     console.error(err.message);
     return res.status(500).send('Database error');
 }
 
 req.session.userID = this.lastID; 
+req.session.name = name;
+req.session.username = username;
+req.session.role = role;
+
 console.log(this.lastID);
  res.send('User registered'); //send response
 
@@ -137,6 +135,9 @@ app.post('/login', (req, res) => {
  if (err) return console.error("User not found");
  else if (row.password == ps) {
     req.session.userID = row.id;
+    req.session.name = row.name;
+    req.session.username = row.username;
+    req.session.role = row.role;
     res.send(row.role)}
 });
 })
@@ -145,6 +146,17 @@ app.post('/login', (req, res) => {
 app.get('/profile', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'profile.html'));
 
+})
+
+app.post('/user-info', (req, res) => {
+    const user_info  = 
+        {
+            name: req.session.name,
+            username: req.session.username ,
+            role: req.session.role
+        }
+
+        res.send({user_info});
 })
 
 

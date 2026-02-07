@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Research Web - Register</title> 
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <title>Research Web - Register</title> 
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <h1>Welcome to Research web!</h1>
@@ -14,41 +14,42 @@
   <div class="card">
      <div class="card-inner">
          <div class="front">
-          <h1>{{update.username}}'s Profile info</h1>
+          <h1 id="profile-name"></h1>
             <h1>Username:</h1>
-            <span id="s_username">{{update.username}}</span>
+            <span id="profile-username"></span>
 
-            <h1> Profile Image:</h1>
+            <h1>Profile Image:</h1>
 
-            <img src="{{ url_for('static', filename='profile_pics/' + update.image)  }}"   alt="Profile Picture"style="width: 100px; height:100px";/>
+            <!-- <img src='/static/profile_pics' alt="Profile Picture"style="width: 100px; height:100px";/> -->
             
             
-            <h1> Role:</h1>
+            <h1>Role:</h1>
 
-              <p>{{ role }}</p>
+              <p id="profile-role"></p>
 
             <h1>Bio:</h1>
-            {{update.bio}}
+
+            <p id="profile-bio"></p>
             <br>
           </div>
              <div class="back">
-              <form id="profile_form" action="{{url_for("profile")}}" method="post"  enctype="multipart/form-data">
+              <form id="profile_form" enctype="multipart/form-data">
                 <h1>Edit Profile info</h1>
                 
                 <h2>Username</h2>
-                 <input type="text" name="edit_username" placeholder="{{update.username}}" id="profile_username" class="input-field" required autofocus maxlength="25">
+                 <input type="text" name="edit_username" placeholder="Enter new username" id="username-placeholder" class="input-field" required autofocus maxlength="25">
                  <br>
                 <h2>Password</h2>
-                 <input type="password" name="edit_password" placeholder="{{update.password}}" id= "profile_password" class="input-field" required autofocus maxlength="15">
+                 <input type="password" name="edit_password" placeholder="Edit password" id= "profile-ps" class="input-field" required autofocus maxlength="15">
                  <input type="image" src="https://www.svgrepo.com/show/453442/visibility-off.svg" onclick="see_ps();return false;" id="visibility" >
                 <h2>Profile Picture</h2>
                  <input type="file" name="pfp-select"  id="new_file" onchange="preview()">
-                 <img src="{{ url_for('static', filename='profile_pics/' + update.image) }}" id="new_frame" width="100px" height="100px" onclick="trigger_fileinput()"/>
+                 <!-- <img src='/static/profile_pics' id="new_frame" width="100px" height="100px" onclick="trigger_fileinput()"/> -->
               
-              <h2>Role</h2>
+              <h2 id="profile-role"></h2>
          
                  <h2>Bio</h2>
-                 <input type="text" class="input-field" maxlength="150" name="edit_bio" id="profile_bio" placeholder="{{update.bio}}">
+                 <input type="text" class="input-field" maxlength="150" name="edit_bio" id="profile_bio" placeholder="No current bio">
               <br>
                 <input  type="submit"  value="Edit" class="btn-edit"/>
               
@@ -64,7 +65,8 @@
 </html>
 
 <script>
-  
+ 
+ //Password visibility
 function see_ps(){
         var y=document.getElementById("visibility")
         var x= document.getElementById("profile_password");
@@ -83,38 +85,31 @@ function see_ps(){
 
  function trigger_fileinput(){
   document.getElementById("new_file").click();
-
  }
 
-//  function submitGenres() {
-//   var selectedGenres = [];
-//   if (document.getElementById("mg1").checked) {
-//       selectedGenres.push(document.getElementById("mg1").value);
-//   }
-//   if (document.getElementById("mg2").checked) {
-//       selectedGenres.push(document.getElementById("mg2").value);
-//   }
-//   if (document.getElementById("mg3").checked) {
-//     selectedGenres.push(document.getElementById("mg3").value);
-//   }
-//   if (document.getElementById("mg4").checked) {
-//   selectedGenres.push(document.getElementById("mg4").value);
-//   }
-//   if (document.getElementById("mg5").checked) {
-//   selectedGenres.push(document.getElementById("mg5").value);
-//   }
-//   if (document.getElementById("mg6").checked) {
-//     selectedGenres.push(document.getElementById("mg6").value);
-// }
+ //Fetching user info to be displayed
+ fetch('http://localhost:3000/user-info', {
+    method: 'POST',
+    headers: {
+'Content-Type': 'application/json'
+},
+})
+.then(response => response.json())
+.then(data => {
+console.log('Response from server', data)
+document.getElementById('profile-name').innerText = `${data.user_info.name}'s Profile Info`;
+document.getElementById('profile-username').innerText = `${data.user_info.username}`;
+document.getElementById('profile-role').innerText = `${data.user_info.role}`;
+
   
-//   // Convert array to comma-separated string
-//   document.getElementById("edit_genre").value = selectedGenres.join(',');
-// }
+})
+
 </script>
-<script>
+
+<!-- <script>
 
 $('#close').click(function() {
     $('#success').removeClass('close');
 });
-</script>
+</script> -->
  

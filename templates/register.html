@@ -11,9 +11,11 @@
 <div class="register">
   <form id="register_form" >
     <h1>Register</h1>
-    <input type="text" name="username_register" placeholder="username" id="username" class="input-field" required autofocus maxlength="25">
+    <input type="text" name="name_register" placeholder="Enter name" id="name" class="input-field" required autofocus maxlength="25">
     <br>
-    <input type="password" name="password_register" placeholder="password" id= "ps" class="input-field" required autofocus maxlength="15">
+    <input type="text" name="username_register" placeholder="Enter username" id="username" class="input-field" required autofocus maxlength="25">
+    <br>
+    <input type="password" name="password_register" placeholder="Enter password" id= "ps" class="input-field" required autofocus maxlength="15">
     <input type="image" src="https://www.svgrepo.com/show/453442/visibility-off.svg" onclick="see_ps();return false;" id="image" >
 
     <div class="btn-box">
@@ -156,6 +158,7 @@ function submitRole() {
 form3.addEventListener('submit', (e) => {
 e.preventDefault()
 
+const name = document.getElementById("name").value
 const username = document.getElementById("username").value
 const ps = document.getElementById("ps").value
 const role = submitRole();
@@ -164,7 +167,7 @@ fetch('http://localhost:3000/register', {
     headers: {
 'Content-Type': 'application/json'
 },
-    body: JSON.stringify({ username, ps, role })
+    body: JSON.stringify({ name, username, ps, role })
 })
 .then(response => response.text())
 .then(data => {

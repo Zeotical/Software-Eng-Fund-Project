@@ -752,3 +752,22 @@ document.addEventListener('keydown', function(event) {
         closeModal();
     }
 });
+
+//Fetching user info to be displayed
+ fetch('http://localhost:3000/user-info', {
+    method: 'POST',
+    headers: {
+'Content-Type': 'application/json'
+},
+})
+.then(response => response.json())
+.then(data => {
+console.log('Response from server', data)
+document.getElementById('coordinatorName').innerText = `${data.user_info.name}`;
+document.getElementById('username').innerText = `${data.user_info.username}`;
+});
+
+function profile() {
+        // In real implementation, call logout API
+        window.location.href = '/profile';
+}
