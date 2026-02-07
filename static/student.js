@@ -312,7 +312,7 @@ function logout() { if (confirm('Are you sure you want to logout?')) window.loca
 
 //Fetching user info to be displayed
  fetch('http://localhost:3000/user-info', {
-    method: 'POST',
+    method: 'GET',
     headers: {
 'Content-Type': 'application/json'
 },

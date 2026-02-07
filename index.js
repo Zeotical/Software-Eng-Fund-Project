@@ -148,7 +148,7 @@ res.sendFile(path.join(__dirname, 'templates', 'profile.html'));
 
 })
 
-app.post('/user-info', (req, res) => {
+app.get('/user-info', (req, res) => {
     const user_info  = 
         {
             name: req.session.name,
@@ -165,6 +165,36 @@ app.get('/admin', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'admin.html'));
 })
 
+//Admin stats
+app.get('/admin/stats', (req, res) => {
+
+    const sql = `
+        SELECT 
+            (SELECT COUNT(*) FROM users) as totalUsers,
+            (SELECT COUNT(*) FROM publication) as totalpublications
+
+    `
+    db.get(sql, [], (err, row) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(row);
+    });
+});
+
+//Admin stats
+app.get('/admin/allUsers', (req, res) => {
+
+sql = 'SELECT* FROM users';
+db.all(sql, [], (err, rows) => {
+if (err) return console.error(err.message);
+res.json(rows);
+rows.forEach((row) => {
+console.log(row);
+});
+});
+
+});
+
+
 //Programme Coordinator Route (GET + POST)
 app.get('/prog_coord', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'progcoordinator.html'));
@@ -179,6 +209,7 @@ app.post('/researcher' ,upload.any(), (req, res) => {
 const title = req.body.title_research;
 const researcher_id = req.session.userID;
 console.log(researcher_id);
+
 // const  description = req.body.publication_descp;
 
     // const publication_file = req.file ;
@@ -206,6 +237,7 @@ const publication_file_path = req.files[0].path; //req.file.path is for a single
 //  if (err) return console.error("User not found");
 //  else if (row.password == ps) res.send(row.role)
 // });
+
 //Insert into table
 i_sql =  'INSERT INTO publication(title, researcherID, publicationDate, publicationFilePath) VALUES (?,?,?,?)';
 db.run(i_sql, [title,researcher_id,"date",publication_file_path] ,(err) => {
@@ -256,6 +288,7 @@ app.get('/test', (req, res) => {
 });
 
 // API endpoint to get current user (for frontend)
+//HANDLED
 app.get('/api/current-user', (req, res) => {
     // Mock user data for testing Programme Coordinator
     res.json({ 

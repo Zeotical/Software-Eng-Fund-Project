@@ -16,7 +16,7 @@
             </div>
             <div class="nav-menu">
 
-              <a href="#section1" class ="nav-link">section1</a>
+              <a href="#section1" class ="nav-link">Dashboard</a>
               <a href="#section2" class ="nav-link">section2</a>
               <a href="#section3" class ="nav-link">section3</a>
               <a href="#section4" class ="nav-link">section4</a>
@@ -37,7 +37,7 @@
         <section id="dashboard" class="section active">
             <div class="dashboard-header">
                 <h1>Welcome, <span id="researcherName"></span></h1>
-                <p>Manage publications, review submissions, and monitor research KPIs</p>
+                <p>Manage publications, submit publications and view submission status</p>
             </div>
 
             <!-- Quick Stats -->
@@ -48,7 +48,7 @@
                     </div>
                     <div class="stat-info">
                         <h3 id="pendingCount">12</h3>
-                        <p>Pending ReviewsREMOVE</p>
+                        <p>Submissions Pending Review</p>
                     </div>
                 </div>
                 
@@ -180,7 +180,7 @@ console.log('Response from server', data)
 
 //Fetching user info to be displayed
  fetch('http://localhost:3000/user-info', {
-    method: 'POST',
+    method: 'GET',
     headers: {
 'Content-Type': 'application/json'
 },
