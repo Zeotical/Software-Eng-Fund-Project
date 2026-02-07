@@ -46,36 +46,7 @@
                  <img src="{{ url_for('static', filename='profile_pics/' + update.image) }}" id="new_frame" width="100px" height="100px" onclick="trigger_fileinput()"/>
               
               <h2>Role</h2>
-                 <!-- <input type="hidden" name="edit_genre" id="edit_genre">
-                 <div class="dropdown">
-                   <button class="music-btn" onclick="return false;">Select Your Top Music Genre</button>
-                   <div class="content">
-                    <div>
-                     <input type="radio" id="mg1"  name="music" value="Hip hop" onclick="submitGenres()" >    
-                     <label for="mg1">Hip Hop</label>   
-                     </div>
-                     <div>
-                     <input type="radio" id="mg2"  name="music" value="R&B" onclick="submitGenres()" >
-                     <label for="mg2">R&B</label>
-                     </div>
-                     <div>
-                     <input type="radio" id="mg3"  name="music" value="Rock" onclick="submitGenres()" >
-                     <label for="mg3">Rock</label>
-                     </div>
-                     <div>
-                     <input type="radio" id="mg4"  name="music" value="Electronic music" onclick="submitGenres()" >
-                     <label for="mg4">Electronic music</label>
-                     </div>
-                     <div>
-                     <input type="radio" id="mg5"  name="music" value="Pop" onclick="submitGenres()" >
-                     <label for="mg5">Pop</label>
-                     </div>
-                     <div>
-                     <input type="radio" id="mg6"  name="music" value="KPOP" onclick="submitGenres()" >
-                     <label for="mg6">KPOP</label>
-                     </div>
-                   </div>
-                 </div> -->
+         
                  <h2>Bio</h2>
                  <input type="text" class="input-field" maxlength="150" name="edit_bio" id="profile_bio" placeholder="{{update.bio}}">
               <br>
