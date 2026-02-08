@@ -60,24 +60,31 @@ db.run("PRAGMA foreign_keys = ON");
 //Create tables
 userTable_sql = 
 `CREATE TABLE IF NOT EXISTS users(
-id INTEGER PRIMARY KEY, 
-name,
-username,
-password, 
-email, 
-role)`;
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    name TEXT,
+    username TEXT UNIQUE,
+    password TEXT, 
+    email TEXT, 
+    role TEXT,
+    department TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)`;
 db.run(userTable_sql);
 
 // AUTOINCREMENT unique id no reusing
 publicationTable_sql = 
 `CREATE TABLE IF NOT EXISTS publication(
-publicationID INTEGER PRIMARY KEY AUTOINCREMENT, 
-title,
-status,
-researcherID INTEGER, 
-publicationDate DATE,
-publicationFilePath,
-CONSTRAINT FK_researcher_id FOREIGN KEY (researcherID) REFERENCES users(id)
+    publicationID INTEGER PRIMARY KEY AUTOINCREMENT, 
+    title TEXT,
+    status TEXT DEFAULT 'draft',
+    researcherID INTEGER, 
+    publicationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    publication_type TEXT,
+    department TEXT,
+    abstract TEXT,
+    keywords TEXT,
+    file_path TEXT,
+    CONSTRAINT FK_researcher_id FOREIGN KEY (researcherID) REFERENCES users(id)
 )`;
 db.run(publicationTable_sql);
 
@@ -90,6 +97,33 @@ proofFilePath,
 CONSTRAINT FK_publication_id FOREIGN KEY (publicationID) REFERENCES publication(publicationID)
 )`;
 db.run(proofTable_sql);
+
+const notificationsTableSql = `
+    CREATE TABLE IF NOT EXISTS notifications(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        message TEXT,
+        type TEXT,
+        is_read BOOLEAN DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+`;
+db.run(notificationsTableSql);
+
+const reviewHistorySql = `
+    CREATE TABLE IF NOT EXISTS review_history(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        publication_id INTEGER,
+        coordinator_id INTEGER,
+        decision TEXT,
+        feedback TEXT,
+        reviewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (publication_id) REFERENCES publication(publicationID),
+        FOREIGN KEY (coordinator_id) REFERENCES users(id)
+    )
+`;
+db.run(reviewHistorySql);
 
 // Routes
 
@@ -278,6 +312,167 @@ app.use((req, res) => {
 });
 
 // ========== ADDED ROUTES END HERE ==========
+// ========== ADD THESE API ENDPOINTS ==========
+
+// Dashboard statistics
+app.get('/api/dashboard/stats', (req, res) => {
+    const sql = `
+        SELECT 
+            COUNT(CASE WHEN status = 'pending' THEN 1 END) as pending,
+            COUNT(CASE WHEN status = 'approved' THEN 1 END) as approved,
+            COUNT(CASE WHEN status = 'rejected' THEN 1 END) as rejected,
+            COUNT(CASE WHEN status = 'changes_required' THEN 1 END) as changes
+        FROM publication
+    `;
+    
+    db.get(sql, [], (err, row) => {
+        if (err) {
+            console.error('Error getting dashboard stats:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        res.json(row || { pending: 0, approved: 0, rejected: 0, changes: 0 });
+    });
+});
+
+// Recent submissions (last 5)
+app.get('/api/publications/recent', (req, res) => {
+    const sql = `
+        SELECT p.*, u.name as researcher_name
+        FROM publication p
+        LEFT JOIN users u ON p.researcherID = u.id
+        ORDER BY p.publicationDate DESC
+        LIMIT 5
+    `;
+    
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error('Error getting recent publications:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        res.json({ publications: rows || [] });
+    });
+});
+
+// Pending publications for review
+app.get('/api/publications/pending', (req, res) => {
+    const sql = `
+        SELECT p.*, u.name as researcher_name, u.email
+        FROM publication p
+        LEFT JOIN users u ON p.researcherID = u.id
+        WHERE p.status IN ('pending', 'submitted', 'changes_required')
+        ORDER BY p.publicationDate DESC
+    `;
+    
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error('Error getting pending publications:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        res.json({ publications: rows || [] });
+    });
+});
+
+// Get single publication by ID
+app.get('/api/publications/:id', (req, res) => {
+    const sql = `
+        SELECT p.*, u.name as researcher_name, u.email, u.department
+        FROM publication p
+        LEFT JOIN users u ON p.researcherID = u.id
+        WHERE p.publicationID = ?
+    `;
+    
+    db.get(sql, [req.params.id], (err, row) => {
+        if (err) {
+            console.error('Error getting publication:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        if (!row) {
+            return res.status(404).json({ error: 'Publication not found' });
+        }
+        res.json({ publication: row });
+    });
+});
+
+// Submit review decision
+app.post('/api/publications/:id/review', (req, res) => {
+    const { decision, feedback } = req.body;
+    const publicationId = req.params.id;
+    
+    // Validate decision
+    const validDecisions = ['approve', 'reject', 'changes_required'];
+    if (!validDecisions.includes(decision)) {
+        return res.status(400).json({ error: 'Invalid decision' });
+    }
+    
+    // Map decision to status
+    const statusMap = {
+        'approve': 'approved',
+        'reject': 'rejected', 
+        'changes_required': 'changes_required'
+    };
+    
+    const newStatus = statusMap[decision];
+    
+    const sql = 'UPDATE publication SET status = ? WHERE publicationID = ?';
+    
+    db.run(sql, [newStatus, publicationId], function(err) {
+        if (err) {
+            console.error('Error updating publication:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        
+        // In a real system, you would:
+        // 1. Add to review history table
+        // 2. Create notification for researcher
+        // 3. Send email notification
+        
+        res.json({ 
+            success: true, 
+            message: `Publication ${decision}d successfully` 
+        });
+    });
+});
+
+// Notifications endpoint
+app.get('/api/notifications', (req, res) => {
+    // For now, return mock notifications
+    // In real system, query from notifications table
+    const mockNotifications = [
+        {
+            id: 1,
+            message: "New submission from Dr. Sarah Johnson",
+            created_at: new Date().toISOString(),
+            is_read: false
+        },
+        {
+            id: 2,
+            message: "Publication #245 has been resubmitted",
+            created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+            is_read: false
+        }
+    ];
+    res.json({ notifications: mockNotifications });
+});
+
+// Analytics data
+app.get('/api/analytics/publications-by-type', (req, res) => {
+    const sql = `
+        SELECT 
+            publication_type,
+            COUNT(*) as count
+        FROM publication
+        WHERE publication_type IS NOT NULL
+        GROUP BY publication_type
+    `;
+    
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error('Error getting analytics:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        res.json({ data: rows || [] });
+    });
+});
 
 app.listen(3000, () => {
 console.log('The server is running')

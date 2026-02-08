@@ -63,119 +63,103 @@ function navigateTo(sectionId) {
 }
 
 // Dashboard Functions
-function loadDashboardData() {
-    // Mock data - Replace with actual API calls
-    const mockData = {
-        pendingCount: 12,
-        approvedCount: 48,
-        rejectedCount: 5,
-        changesCount: 8,
-        recentSubmissions: [
-            {
-                id: 1,
-                title: "Machine Learning in Healthcare",
-                researcher: "Dr. Sarah Johnson",
-                type: "Journal Article",
-                submitted: "2024-03-15",
-                status: "pending"
-            },
-            {
-                id: 2,
-                title: "Blockchain Applications in Finance",
-                researcher: "Prof. Michael Chen",
-                type: "Conference Paper",
-                submitted: "2024-03-14",
-                status: "pending"
-            },
-            {
-                id: 3,
-                title: "Sustainable Energy Solutions",
-                researcher: "Dr. Emma Wilson",
-                type: "Journal Article",
-                submitted: "2024-03-13",
-                status: "changes"
-            },
-            {
-                id: 4,
-                title: "AI Ethics Framework",
-                researcher: "Dr. Robert Kim",
-                type: "Book Chapter",
-                submitted: "2024-03-12",
-                status: "pending"
-            },
-            {
-                id: 5,
-                title: "Quantum Computing Advances",
-                researcher: "Prof. Lisa Wang",
-                type: "Journal Article",
-                submitted: "2024-03-11",
-                status: "pending"
-            }
-        ],
-        notifications: [
-            {
-                id: 1,
-                message: "New submission from Dr. Sarah Johnson",
-                time: "2 hours ago",
-                read: false
-            },
-            {
-                id: 2,
-                message: "Publication #245 has been resubmitted",
-                time: "1 day ago",
-                read: false
-            },
-            {
-                id: 3,
-                message: "Monthly analytics report is ready",
-                time: "2 days ago",
-                read: true
-            },
-            {
-                id: 4,
-                message: "System maintenance scheduled for Friday",
-                time: "3 days ago",
-                read: true
-            }
-        ]
-    };
-    
-    // Update stats
-    document.getElementById('pendingCount').textContent = mockData.pendingCount;
-    document.getElementById('approvedCount').textContent = mockData.approvedCount;
-    document.getElementById('rejectedCount').textContent = mockData.rejectedCount;
-    document.getElementById('changesCount').textContent = mockData.changesCount;
-    
-    // Load recent submissions
+async function loadDashboardData() {
+    try {
+        // Fetch current user
+        const userResponse = await fetch('/api/current-user');
+        const userData = await userResponse.json();
+        document.getElementById('coordinatorName').textContent = userData.user.name;
+        document.getElementById('username').textContent = userData.user.name;
+        
+        // Fetch dashboard stats
+        const statsResponse = await fetch('/api/dashboard/stats');
+        const statsData = await statsResponse.json();
+        
+        // Update stats
+        document.getElementById('pendingCount').textContent = statsData.pending || 0;
+        document.getElementById('approvedCount').textContent = statsData.approved || 0;
+        document.getElementById('rejectedCount').textContent = statsData.rejected || 0;
+        document.getElementById('changesCount').textContent = statsData.changes || 0;
+        
+        // Fetch recent submissions
+        const submissionsResponse = await fetch('/api/publications/recent');
+        const submissionsData = await submissionsResponse.json();
+        loadRecentSubmissions(submissionsData.publications);
+        
+        // Fetch notifications
+        const notificationsResponse = await fetch('/api/notifications');
+        const notificationsData = await notificationsResponse.json();
+        loadNotifications(notificationsData.notifications);
+        
+    } catch (error) {
+        console.error('Error loading dashboard data:', error);
+        showToast('Error loading dashboard data');
+    }
+}
+
+function loadRecentSubmissions(publications) {
     const submissionsTable = document.getElementById('recentSubmissions');
-    submissionsTable.innerHTML = mockData.recentSubmissions.map(sub => `
+    if (!publications || publications.length === 0) {
+        submissionsTable.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 20px;">
+                    <i class="fas fa-inbox"></i>
+                    <p>No submissions found</p>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    submissionsTable.innerHTML = publications.map(pub => `
         <tr>
-            <td>${sub.title}</td>
-            <td>${sub.researcher}</td>
-            <td>${sub.type}</td>
-            <td>${sub.submitted}</td>
-            <td><span class="status ${sub.status}">${getStatusText(sub.status)}</span></td>
+            <td>${pub.title}</td>
+            <td>${pub.researcher_name || 'Unknown'}</td>
+            <td>${pub.publication_type || 'Journal Article'}</td>
+            <td>${formatDate(pub.submission_date)}</td>
+            <td><span class="status ${pub.status}">${getStatusText(pub.status)}</span></td>
             <td>
-                <button class="action-btn-small btn-review" onclick="reviewPublication(${sub.id})">
+                <button class="action-btn-small btn-review" onclick="reviewPublication(${pub.id})">
                     <i class="fas fa-eye"></i> Review
                 </button>
             </td>
         </tr>
     `).join('');
-    
-    // Load notifications
+}
+
+function loadNotifications(notifications) {
     const notificationsList = document.getElementById('notificationsList');
-    notificationsList.innerHTML = mockData.notifications.map(notif => `
-        <div class="activity-item ${notif.read ? '' : 'unread'}">
+    if (!notifications || notifications.length === 0) {
+        notificationsList.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-bell-slash"></i>
+                <p>No notifications</p>
+            </div>
+        `;
+        return;
+    }
+    
+    notificationsList.innerHTML = notifications.map(notif => `
+        <div class="activity-item ${notif.is_read ? '' : 'unread'}">
             <div class="activity-icon">
                 <i class="fas fa-bell"></i>
             </div>
             <div class="activity-content">
                 <p>${notif.message}</p>
-                <small>${notif.time}</small>
+                <small>${formatDate(notif.created_at)}</small>
             </div>
         </div>
     `).join('');
+}
+
+function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
 }
 
 function getStatusText(status) {
@@ -196,98 +180,50 @@ function markAllAsRead() {
 }
 
 // Publications Review Functions
-function loadPublications() {
-    // Mock data - Replace with actual API calls
-    const mockPublications = [
-        {
-            id: 1,
-            title: "Machine Learning in Healthcare: A Comprehensive Review",
-            researcher: "Dr. Sarah Johnson",
-            department: "Computer Science",
-            type: "Journal Article",
-            submitted: "2024-03-15",
-            status: "pending",
-            abstract: "This paper reviews the latest machine learning applications in healthcare..."
-        },
-        {
-            id: 2,
-            title: "Blockchain Technology for Secure Financial Transactions",
-            researcher: "Prof. Michael Chen",
-            department: "Business",
-            type: "Conference Paper",
-            submitted: "2024-03-14",
-            status: "pending",
-            abstract: "Exploring blockchain applications in modern financial systems..."
-        },
-        {
-            id: 3,
-            title: "Renewable Energy Systems: Future Perspectives",
-            researcher: "Dr. Emma Wilson",
-            department: "Engineering",
-            type: "Journal Article",
-            submitted: "2024-03-13",
-            status: "changes",
-            abstract: "Analysis of sustainable energy solutions for urban environments..."
-        },
-        {
-            id: 4,
-            title: "Ethical Considerations in Artificial Intelligence",
-            researcher: "Dr. Robert Kim",
-            department: "Computer Science",
-            type: "Book Chapter",
-            submitted: "2024-03-12",
-            status: "pending",
-            abstract: "Framework for ethical AI development and deployment..."
-        },
-        {
-            id: 5,
-            title: "Quantum Computing: Breaking Cryptographic Barriers",
-            researcher: "Prof. Lisa Wang",
-            department: "Physics",
-            type: "Journal Article",
-            submitted: "2024-03-11",
-            status: "resubmitted",
-            abstract: "Quantum computing implications for modern cryptography..."
-        },
-        {
-            id: 6,
-            title: "Climate Change Impact on Marine Ecosystems",
-            researcher: "Dr. James Miller",
-            department: "Environmental Science",
-            type: "Journal Article",
-            submitted: "2024-03-10",
-            status: "pending",
-            abstract: "Studying the effects of climate change on ocean biodiversity..."
+async function loadPublications() {
+    try {
+        const response = await fetch('/api/publications/pending');
+        const data = await response.json();
+        
+        const publicationsList = document.getElementById('publicationsList');
+        if (!data.publications || data.publications.length === 0) {
+            publicationsList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>No publications to review</p>
+                </div>
+            `;
+            return;
         }
-    ];
-    
-    const publicationsList = document.getElementById('publicationsList');
-    publicationsList.innerHTML = mockPublications.map(pub => `
-        <div class="publication-card" data-status="${pub.status}" data-type="${pub.type}" data-department="${pub.department.toLowerCase()}">
-            <div class="publication-header">
-                <h3 class="publication-title">${pub.title}</h3>
-                <span class="status ${pub.status}">${getStatusText(pub.status)}</span>
+        
+        publicationsList.innerHTML = data.publications.map(pub => `
+            <div class="publication-card" data-status="${pub.status}" data-type="${pub.publication_type}" data-department="${pub.department ? pub.department.toLowerCase() : ''}">
+                <div class="publication-header">
+                    <h3 class="publication-title">${pub.title}</h3>
+                    <span class="status ${pub.status}">${getStatusText(pub.status)}</span>
+                </div>
+                <div class="publication-meta">
+                    <span><i class="fas fa-user"></i> ${pub.researcher_name || 'Unknown'}</span>
+                    ${pub.department ? `<span><i class="fas fa-building"></i> ${pub.department}</span>` : ''}
+                    <span><i class="fas fa-file-alt"></i> ${pub.publication_type || 'Journal Article'}</span>
+                    <span><i class="fas fa-calendar"></i> ${formatDate(pub.submission_date)}</span>
+                </div>
+                ${pub.abstract ? `<p class="publication-abstract">${pub.abstract}</p>` : ''}
+                <div class="publication-actions">
+                    <button class="action-btn-small btn-review" onclick="reviewPublication(${pub.id})">
+                        <i class="fas fa-eye"></i> Review
+                    </button>
+                    ${pub.file_path ? `<button class="action-btn-small btn-view" onclick="viewPublication(${pub.id})">
+                        <i class="fas fa-file-pdf"></i> View PDF
+                    </button>` : ''}
+                </div>
             </div>
-            <div class="publication-meta">
-                <span><i class="fas fa-user"></i> ${pub.researcher}</span>
-                <span><i class="fas fa-building"></i> ${pub.department}</span>
-                <span><i class="fas fa-file-alt"></i> ${pub.type}</span>
-                <span><i class="fas fa-calendar"></i> ${pub.submitted}</span>
-            </div>
-            <p class="publication-abstract">${pub.abstract}</p>
-            <div class="publication-actions">
-                <button class="action-btn-small btn-review" onclick="reviewPublication(${pub.id})">
-                    <i class="fas fa-eye"></i> Review
-                </button>
-                <button class="action-btn-small btn-view" onclick="viewPublication(${pub.id})">
-                    <i class="fas fa-file-pdf"></i> View PDF
-                </button>
-                <button class="action-btn-small" onclick="messageResearcher(${pub.id})">
-                    <i class="fas fa-envelope"></i> Message
-                </button>
-            </div>
-        </div>
-    `).join('');
+        `).join('');
+        
+    } catch (error) {
+        console.error('Error loading publications:', error);
+        showToast('Error loading publications');
+    }
 }
 
 function filterPublications() {
@@ -315,75 +251,70 @@ function filterPublications() {
     });
 }
 
-function reviewPublication(publicationId) {
-    // Mock publication data
-    const publication = {
-        id: publicationId,
-        title: "Machine Learning in Healthcare: A Comprehensive Review",
-        researcher: "Dr. Sarah Johnson",
-        email: "sarah.johnson@university.edu",
-        department: "Computer Science",
-        type: "Journal Article",
-        submitted: "March 15, 2024",
-        abstract: "This paper provides a comprehensive review of machine learning applications in healthcare, focusing on diagnosis, treatment planning, and patient monitoring systems. We analyze recent advancements and discuss future directions for research in this field.",
-        keywords: "Machine Learning, Healthcare, AI, Medical Diagnosis, Treatment Planning",
-        status: "Pending Review"
-    };
-    
-    currentPublication = publication;
-    
-    // Populate modal
-    document.getElementById('reviewPublicationDetails').innerHTML = `
-        <h3>${publication.title}</h3>
-        <div class="publication-meta">
-            <div class="meta-item">
-                <span class="meta-label">Researcher:</span>
-                <span class="meta-value">${publication.researcher}</span>
+async function reviewPublication(publicationId) {
+    try {
+        const response = await fetch(`/api/publications/${publicationId}`);
+        const data = await response.json();
+        
+        currentPublication = data.publication;
+        
+        // Populate modal with real data
+        document.getElementById('reviewPublicationDetails').innerHTML = `
+            <h3>${currentPublication.title}</h3>
+            <div class="publication-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Researcher:</span>
+                    <span class="meta-value">${currentPublication.researcher_name || 'Unknown'}</span>
+                </div>
+                ${currentPublication.email ? `<div class="meta-item">
+                    <span class="meta-label">Email:</span>
+                    <span class="meta-value">${currentPublication.email}</span>
+                </div>` : ''}
+                ${currentPublication.department ? `<div class="meta-item">
+                    <span class="meta-label">Department:</span>
+                    <span class="meta-value">${currentPublication.department}</span>
+                </div>` : ''}
+                <div class="meta-item">
+                    <span class="meta-label">Type:</span>
+                    <span class="meta-value">${currentPublication.publication_type || 'Journal Article'}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Submitted:</span>
+                    <span class="meta-value">${formatDate(currentPublication.submission_date)}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status:</span>
+                    <span class="meta-value status ${currentPublication.status}">${getStatusText(currentPublication.status)}</span>
+                </div>
             </div>
-            <div class="meta-item">
-                <span class="meta-label">Email:</span>
-                <span class="meta-value">${publication.email}</span>
+            ${currentPublication.abstract ? `<div class="publication-abstract">
+                <h4>Abstract:</h4>
+                <p>${currentPublication.abstract}</p>
+            </div>` : ''}
+            ${currentPublication.keywords ? `<div class="publication-keywords">
+                <h4>Keywords:</h4>
+                <p>${currentPublication.keywords}</p>
+            </div>` : ''}
+            <div class="publication-actions">
+                ${currentPublication.file_path ? `<button class="btn-secondary" onclick="viewPublication(${publicationId})">
+                    <i class="fas fa-file-pdf"></i> View Full Paper
+                </button>` : ''}
+                <button class="btn-secondary" onclick="viewProofs(${publicationId})">
+                    <i class="fas fa-check-circle"></i> View Proofs
+                </button>
             </div>
-            <div class="meta-item">
-                <span class="meta-label">Department:</span>
-                <span class="meta-value">${publication.department}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Type:</span>
-                <span class="meta-value">${publication.type}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Submitted:</span>
-                <span class="meta-value">${publication.submitted}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Status:</span>
-                <span class="meta-value status pending">${publication.status}</span>
-            </div>
-        </div>
-        <div class="publication-abstract">
-            <h4>Abstract:</h4>
-            <p>${publication.abstract}</p>
-        </div>
-        <div class="publication-keywords">
-            <h4>Keywords:</h4>
-            <p>${publication.keywords}</p>
-        </div>
-        <div class="publication-actions">
-            <button class="btn-secondary" onclick="viewPublication(${publicationId})">
-                <i class="fas fa-file-pdf"></i> View Full Paper
-            </button>
-            <button class="btn-secondary" onclick="viewProofs(${publicationId})">
-                <i class="fas fa-check-circle"></i> View Proofs
-            </button>
-        </div>
-    `;
-    
-    // Clear feedback
-    document.getElementById('feedback').value = '';
-    
-    // Show modal
-    document.getElementById('reviewModal').classList.add('active');
+        `;
+        
+        // Clear feedback
+        document.getElementById('feedback').value = '';
+        
+        // Show modal
+        document.getElementById('reviewModal').classList.add('active');
+        
+    } catch (error) {
+        console.error('Error loading publication:', error);
+        showToast('Error loading publication details');
+    }
 }
 
 function viewPublication(id) {
@@ -412,30 +343,50 @@ function makeDecision(decision) {
     }
 }
 
-function submitDecision() {
+async function submitDecision() {
     const feedback = document.getElementById('feedback').value;
     const decision = document.querySelector('.decision-btn.selected');
     
     if (!decision) {
-        alert('Please select a decision first');
+        showToast('Please select a decision first');
         return;
     }
     
-    const decisionType = decision.classList[1]; // approve, reject, or request-changes
+    const decisionType = decision.classList[1]; // approve, reject, or changes_required
     
-    // Mock API call
-    setTimeout(() => {
-        showToast(`Publication ${decisionType}d successfully`);
-        closeModal();
+    try {
+        const response = await fetch(`/api/publications/${currentPublication.id}/review`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                decision: decisionType,
+                feedback: feedback
+            })
+        });
         
-        // Refresh the publications list
-        if (currentSection === 'review') {
-            loadPublications();
+        const result = await response.json();
+        
+        if (result.success) {
+            showToast(`Publication ${decisionType}d successfully`);
+            closeModal();
+            
+            // Refresh data
+            if (currentSection === 'review') {
+                await loadPublications();
+            }
+            if (currentSection === 'dashboard') {
+                await loadDashboardData();
+            }
+        } else {
+            showToast(`Error: ${result.error}`);
         }
         
-        // Update dashboard stats
-        loadDashboardData();
-    }, 1000);
+    } catch (error) {
+        console.error('Error submitting decision:', error);
+        showToast('Error submitting decision');
+    }
 }
 
 // Analytics Functions
