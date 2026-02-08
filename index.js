@@ -562,7 +562,7 @@ app.get('/admin/stats', (req, res) => {
 //Admin stats
 app.get('/admin/allUsers', (req, res) => {
 
-sql = 'SELECT* FROM users';
+sql = 'SELECT* FROM users WHERE role != "Admin" ';
 db.all(sql, [], (err, rows) => {
 if (err) return console.error(err.message);
 res.json(rows);
