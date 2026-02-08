@@ -73,6 +73,7 @@ function createTables() {
             email TEXT, 
             role TEXT,
             department TEXT,
+            bio TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`, (err) => {
             if (err) {
@@ -487,17 +488,25 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-    const{username,ps,role} = req.body;
-    //Insert into table
-    i_sql =  'INSERT INTO users(name, username, password, email, role) VALUES (?,?,?,?,?)';
-    db.run(i_sql, ['ok','lol',username,ps,'mike@gmail.com', role] ,(err) => {
-        if (err) {
-            console.error(err.message);
-            return res.status(500).send('Database error');
-        }
-        res.send('User registered'); //send response
-    });
-});
+const{name,username,ps,role} = req.body;
+//Insert into table
+i_sql =  'INSERT INTO users(name, username, password, email, role) VALUES (?,?,?,?,?)';
+db.run(i_sql, [name,username,ps,'mike@gmail.com', role] ,function(err)  {
+if (err) {
+    console.error(err.message);
+    return res.status(500).send('Database error');
+}
+
+req.session.userID = this.lastID; 
+req.session.name = name;
+req.session.username = username;
+req.session.role = role;
+
+console.log(this.lastID);
+ res.send('User registered'); //send response
+
+})
+})
 
 //Login Route (GET + POST)
 app.get('/login', (req, res) => {
@@ -510,7 +519,12 @@ app.post('/login', (req, res) => {
     auth_sql = 'SELECT * FROM users WHERE username = ?';
     db.get(auth_sql, [username], (err, row) => {
         if (err) return console.error("User not found");
-        else if (row.password == ps) res.send(row.role);
+        else if (row.password == ps) {
+            req.session.userID = row.id;
+            req.session.name = row.name;
+            req.session.username = row.username;
+            req.session.role = row.role;
+            res.send(row.role)};
     });
 });
 
@@ -538,6 +552,18 @@ app.post('/publication/updateStatus', (req, res) => {
 app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'profile.html'));
 });
+
+app.get('/user-info', (req, res) => {
+    const user_info  = 
+        {
+            name: req.session.name,
+            username: req.session.username ,
+            role: req.session.role
+        }
+
+        res.send({user_info});
+})
+
 
 //Admin Route (GET + POST)
 app.get('/admin', (req, res) => {

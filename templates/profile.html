@@ -89,7 +89,7 @@ function see_ps(){
 
  //Fetching user info to be displayed
  fetch('http://localhost:3000/user-info', {
-    method: 'POST',
+    method: 'GET',
     headers: {
 'Content-Type': 'application/json'
 },
@@ -100,6 +100,9 @@ console.log('Response from server', data)
 document.getElementById('profile-name').innerText = `${data.user_info.name}'s Profile Info`;
 document.getElementById('profile-username').innerText = `${data.user_info.username}`;
 document.getElementById('profile-role').innerText = `${data.user_info.role}`;
+document.getElementById('profile-bio').innerText = `${data.user_info.bio}`;
+
+
 
   
 })
