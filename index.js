@@ -86,6 +86,7 @@ researcherID INTEGER,
 publicationDate DATE,
 publicationFilePath,
 CONSTRAINT FK_researcher_id FOREIGN KEY (researcherID) REFERENCES users(id)
+ON DELETE CASCADE
 )`;
 db.run(publicationTable_sql);
 
@@ -96,6 +97,7 @@ publicationID INTEGER,
 uploadDate DATE,
 proofFilePath,
 CONSTRAINT FK_publication_id FOREIGN KEY (publicationID) REFERENCES publication(publicationID)
+ON DELETE CASCADE
 )`;
 db.run(proofTable_sql);
 
@@ -236,6 +238,22 @@ console.log(row);
 });
 
 
+// //Delete publication
+app.delete('/admin/deleteUser/:id', (req, res) => {
+
+const usrID = req.params.id;
+    
+
+delsql = 'DELETE FROM users WHERE id = ?';
+db.run(delsql, [usrID], (err) => {
+if (err) return console.error(err.message); {
+    return res.status(500).send('Database error'); }
+
+res.json({ success: true, message: 'User Deleted' });
+
+});
+});
+
 //Programme Coordinator Route (GET + POST)
 app.get('/prog_coord', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'progcoordinator.html'));
@@ -292,6 +310,7 @@ res.send('Publication Uploaded');
 
 });
 
+//Researcher Publications
 app.get('/researcher/allPublications', (req, res) => {
 
 sql = 'SELECT * FROM publication';
@@ -304,6 +323,29 @@ console.log(row);
 });
 
 });
+
+// //Delete publication
+app.delete('/researcher/deletePublication/:id', (req, res) => {
+
+const pubID = req.params.id;
+const deleteProofSql = 'DELETE FROM proof WHERE publicationID = ?';
+    
+db.run(deleteProofSql, [pubID], (err) => {
+    if (err) {
+        console.error("Proof Delete Error:", err.message);
+        return res.status(500).json({ error: "Failed to delete associated proof" });
+    }
+delsql = 'DELETE FROM publication WHERE publicationID = ?';
+db.run(delsql, [pubID], (err) => {
+if (err) return console.error(err.message);
+    return res.status(500).send('Database error');
+
+res.json({ success: true, message: 'Publication Deleted' });
+
+});
+});
+});
+
 
 app.get('/student', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'student.html'));
