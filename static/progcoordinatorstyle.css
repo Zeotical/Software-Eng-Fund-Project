@@ -872,3 +872,455 @@ body {
         margin: 10px;
     }
 }
+
+/* Review Modal Enhancements */
+.publication-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.meta-value {
+    color: #333;
+    font-weight: 500;
+}
+
+.publication-section {
+    margin: 25px 0;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.publication-section h4 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.abstract-content {
+    line-height: 1.6;
+    color: #555;
+    white-space: pre-line;
+}
+
+.keywords-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.keyword-tag {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.additional-info {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.additional-info p {
+    margin: 8px 0;
+}
+
+/* Decision Buttons Styling */
+.decision-btn {
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.decision-btn.approve {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+}
+
+.decision-btn.reject {
+    background: linear-gradient(135deg, #F44336 0%, #d32f2f 100%);
+    color: white;
+}
+
+.decision-btn.request-changes {
+    background: linear-gradient(135deg, #FFA726 0%, #f57c00 100%);
+    color: white;
+}
+
+.decision-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.decision-btn.selected {
+    transform: scale(0.98);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Feedback Section */
+.feedback-section {
+    margin-top: 25px;
+}
+
+.feedback-section label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.feedback-section textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+}
+
+.feedback-section textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px solid #f0f0f0;
+}
+
+/* Empty state for publications */
+.publications-list .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.publications-list .empty-state i {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.publications-list .empty-state p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .publication-meta-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .decision-options {
+        flex-direction: column;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .modal-actions button {
+        width: 100%;
+    }
+}
+
+/* Guidelines Section Styles */
+.guidelines-container {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.guideline-item {
+    background: #f8f9fa;
+    border-left: 4px solid #3498db;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.guideline-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.guideline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.guideline-title {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 1.3rem;
+    flex: 1;
+}
+
+.guideline-category {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-left: 15px;
+    white-space: nowrap;
+}
+
+.guideline-category.submission { background: #e8f5e8; color: #2e7d32; }
+.guideline-category.ethics { background: #fff3e0; color: #ef6c00; }
+.guideline-category.categories { background: #f3e5f5; color: #7b1fa2; }
+.guideline-category.assessment { background: #e0f7fa; color: #006064; }
+.guideline-category.formatting { background: #fce4ec; color: #c2185b; }
+.guideline-category.review { background: #f3e5f5; color: #7b1fa2; }
+.guideline-category.general { background: #f5f5f5; color: #616161; }
+
+.guideline-content {
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #eee;
+}
+
+.guideline-content p {
+    margin-bottom: 15px;
+}
+
+.guideline-content strong {
+    color: #2c3e50;
+}
+
+.guideline-content ul, .guideline-content ol {
+    margin: 10px 0 10px 20px;
+}
+
+.guideline-content li {
+    margin-bottom: 8px;
+}
+
+.guideline-meta {
+    display: flex;
+    gap: 20px;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.guideline-author, .guideline-date, .guideline-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.guideline-status {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.guideline-status.active {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
+
+.guideline-status.draft {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.guideline-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.guideline-actions .action-btn-small {
+    padding: 8px 15px;
+    font-size: 0.85rem;
+}
+
+.btn-edit { background: #2196F3; color: white; }
+.btn-edit:hover { background: #1976D2; }
+
+.btn-preview { background: #9C27B0; color: white; }
+.btn-preview:hover { background: #7B1FA2; }
+
+.btn-delete { background: #F44336; color: white; }
+.btn-delete:hover { background: #D32F2F; }
+
+.btn-publish { background: #4CAF50; color: white; }
+.btn-publish:hover { background: #388E3C; }
+
+/* Guideline Form */
+.guideline-form .form-group {
+    margin-bottom: 20px;
+}
+
+.guideline-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.guideline-form input[type="text"],
+.guideline-form select,
+.guideline-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.guideline-form input[type="text"]:focus,
+.guideline-form select:focus,
+.guideline-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.guideline-form textarea {
+    min-height: 200px;
+    resize: vertical;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+}
+
+/* Preview Modal */
+.preview-guideline-content {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+
+.preview-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.preview-meta-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-meta-label {
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.preview-meta-value {
+    color: #333;
+    font-weight: 500;
+}
+
+/* Empty state */
+.guidelines-container .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.guidelines-container .empty-state i {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.guidelines-container .empty-state p {
+    font-size: 1.1rem;
+    margin: 0 0 20px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .guideline-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .guideline-category {
+        align-self: flex-start;
+        margin-left: 0;
+    }
+    
+    .guideline-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .guideline-actions {
+        justify-content: center;
+    }
+    
+    .preview-meta {
+        grid-template-columns: 1fr;
+    }
+}
