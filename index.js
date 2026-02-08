@@ -99,6 +99,19 @@ CONSTRAINT FK_publication_id FOREIGN KEY (publicationID) REFERENCES publication(
 )`;
 db.run(proofTable_sql);
 
+// ===== SAVED PUBLICATIONS TABLE =====
+savedTable_sql =
+`CREATE TABLE IF NOT EXISTS saved_publications(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+userID INTEGER,
+publicationID INTEGER,
+CONSTRAINT FK_user FOREIGN KEY (userID) REFERENCES users(id),
+CONSTRAINT FK_pub FOREIGN KEY (publicationID) REFERENCES publication(publicationID)
+)`;
+db.run(savedTable_sql);
+
+
+
 // Routes
 
 //Register route (GET + POST)
@@ -148,6 +161,26 @@ app.post('/login', (req, res) => {
 });
 })
 
+app.post('/publication/updateStatus', (req, res) => {
+    const { publicationID, status } = req.body;
+
+    const sql = `
+        UPDATE publication
+        SET status = ?
+        WHERE publicationID = ?
+    `;
+
+    db.run(sql, [status, publicationID], function(err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+
+        res.json({ success: true });
+    });
+});
+
+
 //Profile Route (GET + POST)
 app.get('/profile', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'profile.html'));
@@ -157,13 +190,15 @@ res.sendFile(path.join(__dirname, 'templates', 'profile.html'));
 app.get('/user-info', (req, res) => {
     const user_info  = 
         {
+            id: req.session.userID,   // ← THIS LINE ADDED
             name: req.session.name,
-            username: req.session.username ,
+            username: req.session.username,
             role: req.session.role
         }
 
-        res.send({user_info});
+    res.send({user_info});
 })
+
 
 
 //Admin Route (GET + POST)
@@ -232,10 +267,10 @@ app.post('/researcher' ,upload.any(), (req, res) => {
 const title = req.body.title_research;
 const abstract = req.body.abstract_research;
 const researcher_id = req.session.userID;
-const publication_file_path = req.files[0].path; //req.file.path is for a single not any
-const proof_file_path = req.files[1].path; //req.file.path is for a single not any
+const publication_file_path = req.files[0].path;
+const proof_file_path = req.files[1].path; 
 const date = new Date().toISOString() ;
-//Insert into table
+
 i_sql =  'INSERT INTO publication(title, abstract, researcherID, publicationDate, publicationFilePath) VALUES (?,?,?,?,?)';
 db.run(i_sql, [title, abstract, researcher_id,date,publication_file_path] ,function (err){
 if (err) {
@@ -250,14 +285,13 @@ if (err) {
     console.error(err.message);
     return res.status(500).send('Database error');
 }
-res.send('Publication Uploaded'); //send response
+res.send('Publication Uploaded'); 
 
 })
 })
 
 });
 
-//Admin stats
 app.get('/researcher/allPublications', (req, res) => {
 
 sql = 'SELECT * FROM publication';
@@ -271,7 +305,6 @@ console.log(row);
 
 });
 
-//Student Route (GET + POST)
 app.get('/student', (req, res) => {
 res.sendFile(path.join(__dirname, 'templates', 'student.html'));
 })
@@ -280,9 +313,55 @@ app.listen(3000, () => {
 console.log('The server is running')
 })
 
-// ========== ADDED ROUTES START HERE ==========
+app.post('/student/savePublication', (req, res) => {
+    const { userID, publicationID } = req.body;
 
-// Home route - redirect based on if user is logged in (optional)
+    const sql = `
+        INSERT INTO saved_publications (userID, publicationID)
+        VALUES (?, ?)
+    `;
+
+    db.run(sql, [userID, publicationID], function(err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: 'DB error' });
+        }
+        res.json({ success: true });
+    });
+});
+
+app.post('/student/removeSavedPublication', (req, res) => {
+    const { userID, publicationID } = req.body;
+
+    const sql = `
+        DELETE FROM saved_publications
+        WHERE userID=? AND publicationID=?
+    `;
+
+    db.run(sql, [userID, publicationID], function(err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: 'DB error' });
+        }
+        res.json({ success: true });
+    });
+});
+
+app.get('/student/savedPublications/:userID', (req, res) => {
+
+    const sql = `
+        SELECT publicationID
+        FROM saved_publications
+        WHERE userID=?
+    `;
+
+    db.all(sql, [req.params.userID], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
+
 app.get('/', (req, res) => {
     res.send(`
         <h1>Academic Publication System</h1>
@@ -299,7 +378,6 @@ app.get('/', (req, res) => {
     `);
 });
 
-// Test route to check if server is working
 app.get('/test', (req, res) => {
     res.json({ 
         status: 'ok', 
@@ -308,10 +386,7 @@ app.get('/test', (req, res) => {
     });
 });
 
-// API endpoint to get current user (for frontend)
-//HANDLED
 app.get('/api/current-user', (req, res) => {
-    // Mock user data for testing Programme Coordinator
     res.json({ 
         user: {
             id: 1,
@@ -324,9 +399,7 @@ app.get('/api/current-user', (req, res) => {
     });
 });
 
-// API endpoint for mock publications data (for Programme Coordinator frontend)
 app.get('/api/publications/pending', (req, res) => {
-    // Mock data for Programme Coordinator frontend
     const mockPublications = [
         {
             id: 1,
@@ -352,7 +425,6 @@ app.get('/api/publications/pending', (req, res) => {
     res.json({ publications: mockPublications });
 });
 
-// Catch-all for 404 errors (add at the very end, before app.listen)
 app.use((req, res) => {
     res.status(404).send(`
         <h1>404 - Page Not Found</h1>
