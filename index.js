@@ -6,7 +6,12 @@ const multer = require('multer');
 
 const fileStorage = multer.diskStorage({
 destination: (req, file, cb) => { //cb == callback
-cb(null, 'static/publications'); },
+    if(file.fieldname === 'publication_file'){
+cb(null, 'static/publications'); 
+} else if (file.fieldname === 'proof_file') {
+    cb(null, 'static/proofs');
+        }
+},
 filename: (req, file, cb) => {
 cb(null,file.originalname); //or cb(null, new Date().toISOString() + '-' + file.originalname); 
 }
@@ -75,6 +80,7 @@ publicationTable_sql =
 `CREATE TABLE IF NOT EXISTS publication(
 publicationID INTEGER PRIMARY KEY AUTOINCREMENT, 
 title,
+abstract,
 status DEFAULT pending,
 researcherID INTEGER, 
 publicationDate DATE,
@@ -206,10 +212,6 @@ res.sendFile(path.join(__dirname, 'templates', 'researcher.html'));
 })
 
 app.post('/researcher' ,upload.any(), (req, res) => {
-const title = req.body.title_research;
-const researcher_id = req.session.userID;
-console.log(researcher_id);
-
 // const  description = req.body.publication_descp;
 
     // const publication_file = req.file ;
@@ -227,28 +229,47 @@ console.log(researcher_id);
 //         validationErrors: []
 // });
 // }
-
+const title = req.body.title_research;
+const abstract = req.body.abstract_research;
+const researcher_id = req.session.userID;
 const publication_file_path = req.files[0].path; //req.file.path is for a single not any
-
-//     const { username, ps } = req.body;
-// //query the data
-//  auth_sql = 'SELECT * FROM users WHERE username = ?';
-//  db.get(auth_sql, [username], (err, row) => {
-//  if (err) return console.error("User not found");
-//  else if (row.password == ps) res.send(row.role)
-// });
-
+const proof_file_path = req.files[1].path; //req.file.path is for a single not any
+const date = new Date().toISOString() ;
 //Insert into table
-i_sql =  'INSERT INTO publication(title, researcherID, publicationDate, publicationFilePath) VALUES (?,?,?,?)';
-db.run(i_sql, [title,researcher_id,"date",publication_file_path] ,(err) => {
+i_sql =  'INSERT INTO publication(title, abstract, researcherID, publicationDate, publicationFilePath) VALUES (?,?,?,?,?)';
+db.run(i_sql, [title, abstract, researcher_id,date,publication_file_path] ,function (err){
 if (err) {
     console.error(err.message);
     return res.status(500).send('Database error');
 }
- res.send('Publication Uploaded'); //send response
+const publication_id = this.lastID;
+
+i_sql =  'INSERT INTO proof(publicationID, uploadDate, proofFilePath) VALUES (?,?,?)';
+db.run(i_sql, [publication_id,date,proof_file_path] ,function (err) {
+if (err) {
+    console.error(err.message);
+    return res.status(500).send('Database error');
+}
+res.send('Publication Uploaded'); //send response
 
 })
 })
+
+});
+
+//Admin stats
+app.get('/researcher/allPublications', (req, res) => {
+
+sql = 'SELECT * FROM publication';
+db.all(sql, [], (err, rows) => {
+if (err) return console.error(err.message);
+res.json(rows);
+rows.forEach((row) => {
+console.log(row);
+});
+});
+
+});
 
 //Student Route (GET + POST)
 app.get('/student', (req, res) => {
