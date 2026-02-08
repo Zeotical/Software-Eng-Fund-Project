@@ -1,11 +1,36 @@
-
-
-
 console.log('hello world')
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const session = require('express-session');
+const multer = require('multer');
 
+const fileStorage = multer.diskStorage({
+destination: (req, file, cb) => { //cb == callback
+    if(file.fieldname === 'publication_file'){
+cb(null, 'static/publications'); 
+} else if (file.fieldname === 'proof_file') {
+    cb(null, 'static/proofs');
+        }
+},
+filename: (req, file, cb) => {
+cb(null,file.originalname); //or cb(null, new Date().toISOString() + '-' + file.originalname); 
+}
+});
+
+// const fileFilter = (req, file, cb) => {
+// if (
+// file.mimetype === 'publication_file/pdf' 
+// ) { cb(null, true) }
+// else {
+// cb(null, false); } 
+// }
+const upload = multer({
+storage: fileStorage //,
+// limits: {
+// fileSize: 1048576, //1 Mbn 
+// },
+})
 //express set up 
 const express = require('express');
 const app = express();
@@ -13,7 +38,11 @@ app.use(cors()) ; //allow access from any ip
 app.use('/static', express.static('static')); //serving files from static
 app.use(express.json()); //converts raw JSON data it into a usable js obj
 app.use(express.urlencoded({ extended: true }));
-
+app.use(session({
+secret: 'secret-key',
+resave: false,
+saveUninitialized: false,
+}));
 //db setup
 const sqlite3 = require('sqlite3').verbose();
 
@@ -66,7 +95,7 @@ function createTables() {
             keywords TEXT,
             file_path TEXT,
             CONSTRAINT FK_researcher_id FOREIGN KEY (researcherID) REFERENCES users(id)
-ON DELETE CASCADE
+            ON DELETE CASCADE
         )`, (err) => {
             if (err) {
                 console.error('Error creating publication table:', err.message);
@@ -82,7 +111,7 @@ ON DELETE CASCADE
             uploadDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             proofFilePath TEXT,
             CONSTRAINT FK_publication_id FOREIGN KEY (publicationID) REFERENCES publication(publicationID)
-ON DELETE CASCADE
+            ON DELETE CASCADE
         )`, (err) => {
             if (err) {
                 console.error('Error creating proof table:', err.message);
