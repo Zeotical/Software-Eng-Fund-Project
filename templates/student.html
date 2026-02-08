@@ -17,7 +17,7 @@
                 <a href="#dashboard" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="#publications" class="nav-link"><i class="fas fa-search"></i> Browse Publications</a>
                 <a href="#saved" class="nav-link"><i class="fas fa-bookmark"></i> Saved</a>
-                <a href="#profile" class="nav-link"><i class="fas fa-user-circle" onclick="profile()"></i> My Profile</a>
+                <a href="#profile" class="nav-link" onclick="profile()"><i class="fas fa-user-circle"></i> My Profile</a>
                 <div class="user-menu">
                     <span class="username" id="username"></span>
                     <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -44,7 +44,7 @@
                         <i class="fas fa-bookmark"></i>
                         <span>View Saved</span>
                     </button>
-                    <button class="action-btn" onclick="navigateTo('profile')">
+                    <button class="action-btn" onclick="profile()">
                         <i class="fas fa-user-edit"></i>
                         <span>Edit Profile</span>
                     </button>
@@ -64,7 +64,6 @@
                                 <th>Title</th>
                                 <th>Author(s)</th>
                                 <th>Year</th>
-                                <th>Type</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -96,35 +95,38 @@
                     <label for="filterYear">Year:</label>
                     <select id="filterYear" onchange="filterPublications()">
                         <option value="all">All years</option>
+                        <option value="2026">2026</option>
                         <option value="2025">2025</option>
                         <option value="2024">2024</option>
                         <option value="2023">2023</option>
                         <option value="2022">2022</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="filterType">Type:</label>
-                    <select id="filterType" onchange="filterPublications()">
-                        <option value="all">All Types</option>
-                        <option value="journal">Journal Articles</option>
-                        <option value="thesis">Theses</option>
-                        <option value="book">Book Chapters</option>
-                        <option value="conference">Conference Papers</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
+                        <option value="2008">2008</option>
+                        <option value="2007">2007</option>
+                        <option value="2006">2006</option>
+                        <option value="2005">2005</option>
+                        <option value="2004">2004</option>
+                        <option value="2003">2003</option>
+                        <option value="2002">2002</option>
+                        <option value="2001">2001</option>
+                        <option value="2000">2000</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <label for="filterAuthor">Author:</label>
                     <input type="text" id="filterAuthor" placeholder="Filter by author..." onkeyup="filterPublications()">
-                </div>
-                <div class="filter-group">
-                    <label for="filterDepartment">Department:</label>
-                    <select id="filterDepartment" onchange="filterPublications()">
-                        <option value="all">All Departments</option>
-                        <option value="cs">Computer Science</option>
-                        <option value="engineering">Engineering</option>
-                        <option value="science">Science</option>
-                        <option value="business">Business</option>
-                    </select>
                 </div>
             </div>
 
@@ -144,30 +146,38 @@
                     <label for="savedFilterYear">Year:</label>
                     <select id="savedFilterYear" onchange="filterSavedPublications()">
                         <option value="all">All years</option>
+                        <option value="2026">2026</option>
                         <option value="2025">2025</option>
                         <option value="2024">2024</option>
                         <option value="2023">2023</option>
                         <option value="2022">2022</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="savedFilterType">Type:</label>
-                    <select id="savedFilterType" onchange="filterSavedPublications()">
-                        <option value="all">All Types</option>
-                        <option value="journal">Journal Articles</option>
-                        <option value="thesis">Theses</option>
-                        <option value="book">Book Chapters</option>
-                        <option value="conference">Conference Papers</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
+                        <option value="2008">2008</option>
+                        <option value="2007">2007</option>
+                        <option value="2006">2006</option>
+                        <option value="2005">2005</option>
+                        <option value="2004">2004</option>
+                        <option value="2003">2003</option>
+                        <option value="2002">2002</option>
+                        <option value="2001">2001</option>
+                        <option value="2000">2000</option>
                     </select>
                 </div>
                 <div class="filter-group">
                     <label for="savedSearch">Search:</label>
                     <input type="text" id="savedSearch" placeholder="Search saved publications..." onkeyup="filterSavedPublications()">
-                </div>
-                <div class="filter-group">
-                    <button class="btn-secondary" onclick="clearAllSaved()">
-                        <i class="fas fa-trash"></i> Clear All
-                    </button>
                 </div>
             </div>
 
@@ -181,57 +191,6 @@
             </div>
 
             <div class="publications-grid" id="savedPublicationsGrid"></div>
-        </section>
-
-        <section id="profile" class="section">
-            <div class="section-header">
-                <h1><i class="fas fa-user-circle"></i> My Profile</h1>
-            </div>
-
-            <div class="profile-container">
-                <div class="profile-card">
-                    <div class="profile-header">
-                        <div class="profile-avatar">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <div class="profile-info">
-                            <h2 id="profileName">Alex Johnson</h2>
-                            <p class="profile-role">Student</p>
-                            <p class="profile-department">Computer Science Department</p>
-                            <p class="profile-email">alex.johnson@student.edu</p>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-details">
-                        <div class="detail-row">
-                            <span class="detail-label">Student ID:</span>
-                            <span class="detail-value" id="studentID">S12345678</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Enrollment Year:</span>
-                            <span class="detail-value" id="enrollmentYear">2023</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Saved Publications:</span>
-                            <span class="detail-value" id="totalSaved">0</span>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-actions">
-                        <button class="btn-primary" onclick="editProfile()">
-                            <i class="fas fa-edit"></i> Edit Profile
-                        </button>
-                        <button class="btn-secondary" onclick="changePassword()">
-                            <i class="fas fa-key"></i> Change Password
-                        </button>
-                    </div>
-                </div>
-
-                <div class="profile-activity">
-                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
-                    <div class="activities-list" id="profileActivities"></div>
-                </div>
-            </div>
         </section>
     </div>
 
