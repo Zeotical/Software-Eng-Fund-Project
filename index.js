@@ -483,6 +483,26 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.post('/publication/updateStatus', (req, res) => {
+    const { publicationID, status } = req.body;
+
+    const sql = `
+        UPDATE publication
+        SET status = ?
+        WHERE publicationID = ?
+    `;
+
+    db.run(sql, [status, publicationID], function(err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+
+        res.json({ success: true });
+    });
+});
+
+
 //Profile Route (GET + POST)
 app.get('/profile', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'profile.html'));
@@ -503,7 +523,21 @@ app.get('/researcher', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'researcher.html'));
 });
 
-//Student Route (GET + POST)
+});
+
+app.get('/researcher/allPublications', (req, res) => {
+
+sql = 'SELECT * FROM publication';
+db.all(sql, [], (err, rows) => {
+if (err) return console.error(err.message);
+res.json(rows);
+rows.forEach((row) => {
+console.log(row);
+});
+});
+
+});
+
 app.get('/student', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'student.html'));
 });

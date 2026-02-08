@@ -3,47 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <title>Researcher Dashboard</title> 
-    <link rel="stylesheet" href="/static/styleForUsers.css">
+        <link rel="stylesheet" href="/static/styleForUsers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-<ul>
-<li><a href="#sectionl">section1</a></li>
-<li><a href="#section2">section2</a></li>
-<li><a href="#section3">section3</a></li>
-<li><a href="#section4">section4</a></li>
-<li><a href="#section5">section5</a></li>
-</ul>
-<div class="content">
-<section id="sectionl">    
-<!-- <h2>section1</h2> -->
-    <h1>Submit New Publication</h1>        
+<!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2><i class="fas fa-university"></i> Academic Publication System</h2>
+            </div>
+            <div class="nav-menu">
 
-<!-- <div class="register"> -->
+              <a href="#section1" class ="nav-link">Dashboard</a>
+              <a href="#section2" class ="nav-link">Submit Publication</a>
+              <a href="#section3" class ="nav-link">Manage Publications</a>
+              <a href="#section4" class ="nav-link">section4</a>
+              <a href="#section5" class ="nav-link">section5</a>
+
+                <div class="user-menu">
+                    <span class="username" id="username" onclick="profile()"></span>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+   <div class="container">
+
+    <section id="section1">    
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="dashboard-header">
+                <h1>Welcome, <span id="researcherName"></span></h1>
+                <p>Manage publications, submit publications and view submission status</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card pending">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingCount">12</h3>
+                        <p>Submissions Pending Review</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card approved">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="approvedCount">48</h3>
+                        <p>Approved Publications</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card rejected">
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="rejectedCount">5</h3>
+                        <p>Rejected Publications</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card changes">
+                    <div class="stat-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="changesCount">8</h3>
+                        <p>Requires Changes</p>
+                    </div>
+                </div>
+            </div>
+    </section> 
+    </section>    
+    
+<section id="section2" class="section active">
+ <h2>Submit New Publication</h2>        
+
   <form id="publication_submission_form" enctype="multipart/form-data" > <!-- multer pkg will be looking for data req from the ennnctype so that it can parse it -->
-   <input type="text" name="title_research" placeholder="Title of publication" id="title" class="input-field" required autofocus maxlength="25">
+    <h3>Enter Title</h3>
+   <input type="text" name="title_research" placeholder="Title of publication" id="title" class="input-field" required autofocus maxlength="50">
     <br>
+    <h3>Upload Publication</h3>
     <input type="file" name="publication_file"  id="publication_file" >
+    <br>
+    <h3>Enter Abstract</h3>
+    <input type="text" name="abstract_research" placeholder="Abstract of publication" id="title" class="input-field" required autofocus maxlength="300">
+    <br>
+    <h3>Upload Proof Of Publication</h3>
+    <input type="file" name="proof_file"  id="proof_file" >
     <input  type="submit"  value="Submit" class="btn-register"/>
-
   </form>
-<!-- </div> -->
 
 </section>
-<section id="section2">
-<h2>section2</h2>
+<section id="section3" class="section active" >
+<h2>Manage Publications</h2>
+ <div class="content-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-newspaper"></i>Publications</h2>
+                    <button class="view-all" onclick="navigateTo('publications')">View All <i class="fas fa-arrow-right"></i></button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Abstract</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allPublications"></tbody>
+                    </table>
+                </div>
+            </div>
 </section>
-<section id="section3">
-<h2>section3</h2>
-</section>
-<section id="section4">
+<section id="section4" class="section active">
 <h2>section4</h2>
+<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
 </section>
-<section id="section5">
+<section id="section5" class="section active">
 <h2>section5</h2>
+<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
 </section>
 </div>
 
+
+  <!-- FOOTER -->
+ <footer class="footer">
+        <p>Academic Publication and Research Tracking System &copy; 2024</p>
+</footer>
 
 </body>
 </html>
@@ -52,12 +179,11 @@
 publication_submission_form.addEventListener('submit', (e) => {
 e.preventDefault()
 const form_data = new FormData(publication_submission_form);
-// const title = document.getElementById("title").value
 
-// const publication_file = document.getElementById("file").value
 fetch('http://localhost:3000/researcher', {
     method: 'POST',
-    body: form_data
+    body: form_data,
+    credentials: 'include'
 })
 .then(response => response.text())
 .then(data => {
@@ -65,5 +191,101 @@ console.log('Response from server', data)
 
 })
 })
+
+//Fetching user info to be displayed
+ fetch('http://localhost:3000/user-info', {
+    method: 'GET',
+    headers: {
+'Content-Type': 'application/json'
+},
+})
+.then(response => response.json())
+.then(data => {
+console.log('Response from server', data)
+document.getElementById('researcherName').innerText = `${data.user_info.name}`;
+document.getElementById('username').innerText = `${data.user_info.username}`;
+});
+
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        // In real implementation, call logout API
+        window.location.href = '/login';
+    }
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    const modals = document.querySelectorAll('.modal.active');
+    modals.forEach(modal => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
+  
+function profile() {
+        // In real implementation, call logout API
+        window.location.href = '/profile';
+}
+
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#4CAF50;color:#fff;padding:15px 25px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:3000;animation:slideIn .3s ease';
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'slideOut .3s ease';
+        setTimeout(() => document.body.removeChild(toast), 300);
+    }, 3000);
+    if (!document.querySelector('#toast-styles')) {
+        const style = document.createElement('style');
+        style.id = 'toast-styles';
+        style.textContent = '@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}';
+        document.head.appendChild(style);
+    }
+}
+
+function viewPublication(id, pubFilePath) { 
+    showToast(`Opening Publication Info #${id}`);
+    window.open(`${pubFilePath}`, '_blank');
+ }
+
+
+function PublicationData() {
+
+        //Fetching user info to be displayed
+    fetch('http://localhost:3000/researcher/allPublications', {
+        method: 'GET',
+        headers: {
+    'Content-Type': 'application/json'
+    },
+    })
+    .then(response => response.json())
+    .then(data => {
+    console.log('Response from server', data)
+    
+
+    const publicationTable = document.getElementById('allPublications');
+    publicationTable.innerHTML = data.map(pub => `
+        <tr>
+            <td><strong>${pub.publicationID}</strong></td>
+            <td>${pub.title}</td>
+            <td>${pub.abstract}</td>
+            <td>${pub.status}</td>
+            <td>${pub.publicationDate}</td>
+            <td>
+                <button class="action-btn-small btn-primary" onclick="viewPublication(${pub.publicationID}, '${pub.publicationFilePath}')"><i class="fas fa-eye"></i> View</button>
+                <button class="action-btn-small btn-primary" onclick="viewPublication(${pub.id})"><i class="fas fa-eye"></i>Remove</button>
+                <button class="action-btn-small btn-primary" onclick="viewPublication(${pub.id})"><i class="fas fa-eye"></i>Edit</button>
+
+            </td>
+        </tr>
+    `).join('');
+    
+});
+ };
+  document.addEventListener('DOMContentLoaded', PublicationData);  
 
 </script>

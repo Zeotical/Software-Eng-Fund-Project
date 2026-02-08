@@ -25,7 +25,7 @@ progcoordinator.html
                 <a href="#analytics" class="nav-link"><i class="fas fa-chart-bar"></i> Analytics</a>
                 <a href="#guidelines" class="nav-link"><i class="fas fa-book"></i> Guidelines</a>
                 <div class="user-menu">
-                    <span class="username" id="username">Dr. Coordinator</span>
+                    <span class="username" id="username" onclick="profile()"></span>
                     <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
                 </div>
             </div>
@@ -36,7 +36,7 @@ progcoordinator.html
         <!-- Dashboard Section -->
         <section id="dashboard" class="section active">
             <div class="dashboard-header">
-                <h1>Welcome, <span id="coordinatorName">Programme Coordinator</span></h1>
+                <h1>Welcome, <span id="coordinatorName"></span></h1>
                 <p>Manage publications, review submissions, and monitor research KPIs</p>
             </div>
 
@@ -424,6 +424,6 @@ progcoordinator.html
         <p>Academic Publication and Research Tracking System &copy; 2024</p>
     </footer>
 
-    <script src="/static/progCoordinator.js"></script>
+    <script src="/static/progcoordinator.js"></script>
 </body>
 </html>
