@@ -1,3 +1,7 @@
+progcoordinator.html 
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -338,45 +342,45 @@
     </div>
 
     <!-- Modals -->
-    <!-- Review Modal -->
-    <div id="reviewModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Review Publication</h2>
-                <span class="close" onclick="closeModal()">&times;</span>
+ <!-- Review Modal -->
+<div id="reviewModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Review Publication</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="publication-details" id="reviewPublicationDetails">
+                <!-- Details populated by JavaScript -->
             </div>
-            <div class="modal-body">
-                <div class="publication-details" id="reviewPublicationDetails">
-                    <!-- Details populated by JavaScript -->
+            
+            <div class="decision-panel">
+                <h3>Make a Decision</h3>
+                <div class="decision-options">
+                    <button class="decision-btn approve" onclick="selectDecision('approve')">
+                        <i class="fas fa-check"></i> Approve Publication
+                    </button>
+                    <button class="decision-btn reject" onclick="selectDecision('reject')">
+                        <i class="fas fa-times"></i> Reject Publication
+                    </button>
+                    <button class="decision-btn request-changes" onclick="selectDecision('changes_required')">
+                        <i class="fas fa-edit"></i> Request Changes
+                    </button>
                 </div>
                 
-                <div class="decision-panel">
-                    <h3>Decision</h3>
-                    <div class="decision-options">
-                        <button class="decision-btn approve" onclick="makeDecision('approve')">
-                            <i class="fas fa-check"></i> Approve
-                        </button>
-                        <button class="decision-btn reject" onclick="makeDecision('reject')">
-                            <i class="fas fa-times"></i> Reject
-                        </button>
-                        <button class="decision-btn request-changes" onclick="makeDecision('changes_required')">
-                            <i class="fas fa-edit"></i> Request Changes
-                        </button>
-                    </div>
-                    
-                    <div class="feedback-section">
-                        <label for="feedback">Feedback/Comments:</label>
-                        <textarea id="feedback" placeholder="Enter your feedback for the researcher..." rows="4"></textarea>
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button class="btn-secondary" onclick="closeModal()">Cancel</button>
-                        <button class="btn-primary" onclick="submitDecision()">Submit Decision</button>
-                    </div>
+                <div class="feedback-section">
+                    <label for="feedback">Feedback/Comments (Required for Reject/Changes):</label>
+                    <textarea id="feedback" placeholder="Enter your feedback for the researcher..." rows="4"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn-primary" onclick="submitDecision()">Submit Decision</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Add Guideline Modal -->
     <div id="addGuidelineModal" class="modal">
