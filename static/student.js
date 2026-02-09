@@ -1,3 +1,4 @@
+// Page state tracking
 let currentSection = 'dashboard';
 let savedPublications = new Set();
 
@@ -5,6 +6,7 @@ let allApprovedPublications = [];
 let CURRENT_USER_ID = null;
 
 
+// Initialize dashboard when page loads
 document.addEventListener('DOMContentLoaded', () => {
     initializeNavigation();
     loadDashboardData();
@@ -15,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSavedCount();
 });
 
+
+// Navigation setup
 function initializeNavigation() {
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function(e) {
@@ -27,6 +31,7 @@ function initializeNavigation() {
     });
 }
 
+// Switch visible section
 function showSection(sectionId) {
     document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
     const section = document.getElementById(sectionId);
@@ -39,6 +44,7 @@ function showSection(sectionId) {
     }
 }
 
+// Manual navigation helper
 function navigateTo(sectionId) {
     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
     const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
@@ -46,19 +52,20 @@ function navigateTo(sectionId) {
     showSection(sectionId);
 }
 
+
+// Load dashboard table with approved publications
 function loadDashboardData() {
     fetch('http://localhost:3000/researcher/allPublications')
     .then(res => res.json())
     .then(data => {
 
-        const approvedOnly = data.filter(pub => pub.status === 'approved');
-
+        const approvedOnly = data.filter(pub => pub.status.toLowerCase() === 'approved');
         const table = document.getElementById('recentPublications');
 
         table.innerHTML = approvedOnly.slice(0,5).map(pub => `
             <tr>
                 <td><strong>${pub.title}</strong></td>
-                <td>Researcher ID: ${pub.researcherID}</td>
+                <td>${pub.researcherName || 'Unknown'}</td>
                 <td>${new Date(pub.publicationDate).getFullYear()}</td>
                 <td>
                     <a class="action-btn-small btn-primary"
@@ -73,17 +80,19 @@ function loadDashboardData() {
 }
 
 
+// Load all approved publications
 function loadPublications() {
     fetch('http://localhost:3000/researcher/allPublications')
     .then(res => res.json())
     .then(data => {
 
-        allApprovedPublications = data.filter(pub => pub.status === 'approved');
-
+        allApprovedPublications = data.filter(pub => pub.status.toLowerCase() === 'approved');
         renderPublications(allApprovedPublications);
     });
 }
 
+
+// Render publication cards
 function renderPublications(list) {
     const grid = document.getElementById('publicationsGrid');
 
@@ -91,7 +100,7 @@ function renderPublications(list) {
         <div class="publication-card">
             <div class="publication-header">
                 <h3 class="publication-title">${pub.title}</h3>
-                <p class="publication-authors">Researcher ID: ${pub.researcherID}</p>
+                <p class="publication-authors">${pub.researcherName || 'Unknown'}</p>
             </div>
 
             <div class="publication-meta">
@@ -126,6 +135,8 @@ function renderPublications(list) {
     `).join('');
 }
 
+
+// Filter publications by year/author/search
 function filterPublications() {
     const year = document.getElementById('filterYear').value;
     const author = document.getElementById('filterAuthor').value.toLowerCase();
@@ -146,6 +157,8 @@ function filterPublications() {
     renderPublications(filtered);
 }
 
+
+// Filter saved publications
 function filterSavedPublications() {
     const year = document.getElementById('savedFilterYear').value;
     const search = document.getElementById('savedSearch').value.toLowerCase();
@@ -156,7 +169,7 @@ function filterSavedPublications() {
 
         let saved = data.filter(p =>
             savedPublications.has(p.publicationID) &&
-            p.status === 'approved'
+            p.status && p.status.toLowerCase() === 'approved'
         );
 
         if (year !== 'all') {
@@ -177,6 +190,7 @@ function filterSavedPublications() {
 }
 
 
+// Save/remove publication
 function toggleSavePublication(id) {
 
     if (!CURRENT_USER_ID) {
@@ -217,7 +231,7 @@ function toggleSavePublication(id) {
 }
 
 
-
+// Load saved publications list
 function loadSavedPublications() {
     fetch('http://localhost:3000/researcher/allPublications')
     .then(res => res.json())
@@ -225,13 +239,15 @@ function loadSavedPublications() {
 
         const saved = data.filter(p =>
             savedPublications.has(p.publicationID) &&
-            p.status === 'approved'
+            p.status && p.status.toLowerCase() === 'approved'
         );
 
         renderSavedPublications(saved);
     });
 }
 
+
+// Render saved publication cards
 function renderSavedPublications(saved) {
     const grid = document.getElementById('savedPublicationsGrid');
     const empty = document.getElementById('noSavedPublications');
@@ -248,7 +264,7 @@ function renderSavedPublications(saved) {
         <div class="publication-card saved-publication-card">
             <div class="publication-header">
                 <h3 class="publication-title">${pub.title}</h3>
-                <p class="publication-authors">Researcher ID: ${pub.researcherID}</p>
+                <p class="publication-authors">${pub.researcherName || 'Unknown'}</p>
             </div>
 
             <div class="publication-meta">
@@ -283,7 +299,7 @@ function renderSavedPublications(saved) {
 }
 
 
-
+// Update saved count display
 function updateSavedCount() {
     document.getElementById('savedCount').textContent =
         `${savedPublications.size} publication saved`;
@@ -292,6 +308,7 @@ function updateSavedCount() {
 }
 
 
+// Load current user info + saved publications from DB
 fetch('http://localhost:3000/user-info')
 .then(res => res.json())
 .then(data => {
@@ -315,7 +332,11 @@ fetch('http://localhost:3000/user-info')
 });
 
 
-
+// Placeholder for profile activity logic
 function loadProfileActivities() {}
+
+// Logout redirect
 function logout() { window.location.href = '/login'; }
+
+// Profile redirect
 function profile() { window.location.href = '/profile'; }

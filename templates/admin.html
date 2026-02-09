@@ -4,283 +4,197 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+
+    <!-- Main stylesheet -->
     <link rel="stylesheet" href="/static/styleForUsers.css">
+
+    <!-- Fonts and Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <h2><i class="fas fa-university"></i> Academic Publication System</h2>
-            </div>
-            <div class="nav-menu">
-                
-                <a href="#section1" class ="nav-link">Dashboard</a>
-                <a href="#section2" class ="nav-link">Manage Users</a>
-                <a href="#section3" class ="nav-link">section3</a>
-                <a href="#section4" class ="nav-link">section4</a>
-                <a href="#section5" class ="nav-link">section5</a>
-                <div class="user-menu">
-                    <span class="username" id="username" onclick="profile()"></span>
-                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                </div>
+<!-- NAVBAR: Top navigation bar for admin -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <h2><i class="fas fa-university"></i> Academic Publication System</h2>
+        </div>
+
+        <div class="nav-menu">
+            <!-- Dashboard navigation -->
+            <a href="/admin" class="nav-link active">Dashboard</a>
+
+            <!-- Link to user management section -->
+            <a href="#section2" class="nav-link">Manage Users</a>
+
+            <!-- Logged-in admin info + logout -->
+            <div class="user-menu">
+                <span class="username" id="username" onclick="profile()"></span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </div>
-    </nav>
-       <div class="container">
+    </div>
+</nav>
 
-    <section id="section1">    
-        <!-- Dashboard Section -->
-        <section id="dashboard" class="section active">
-            <div class="dashboard-header">
-                <h1>Welcome, <span id="adminName"></span></h1>
-                <p>Manage users,view and generate system summary</p>
+<div class="container">
+
+    <!-- PAGE HEADER: Greeting + description -->
+    <div class="dashboard-header">
+        <h1>Welcome, <span id="adminName"></span></h1>
+        <p>Manage users and monitor system statistics</p>
+    </div>
+
+    <!-- STATS CARDS: Shows system totals -->
+    <div class="stats-grid">
+
+        <!-- Total Publications -->
+        <div class="stat-card approved">
+            <div class="stat-icon">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="stat-info">
+                <h3 id="pubCount"></h3>
+                <p>Total Publications</p>
+            </div>
+        </div>
+
+        <!-- Total Students -->
+        <div class="stat-card pending">
+            <div class="stat-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="stat-info">
+                <h3 id="studentCount"></h3>
+                <p>Total Students</p>
+            </div>
+        </div>
+
+        <!-- Total Researchers -->
+        <div class="stat-card rejected">
+            <div class="stat-icon">
+                <i class="fas fa-flask"></i>
+            </div>
+            <div class="stat-info">
+                <h3 id="researcherCount"></h3>
+                <p>Total Researchers</p>
+            </div>
+        </div>
+
+        <!-- Total Programme Coordinators -->
+        <div class="stat-card changes">
+            <div class="stat-icon">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <div class="stat-info">
+                <h3 id="coordinatorCount"></h3>
+                <p>Total Programme Coordinators</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- USERS MANAGEMENT SECTION -->
+    <section id="section2">
+        <div class="content-section">
+
+            <!-- Section title -->
+            <div class="section-header">
+                <h2><i class="fas fa-users"></i> All Users</h2>
             </div>
 
-            <!-- Quick Stats -->
-            <div class="stats-grid">
-                <div class="stat-card pending">
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="userCount"></h3>
-                        <p>Total Users</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card approved">
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="pubCount"></h3>
-                        <p>Total Publications</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card rejected">
-                    <div class="stat-icon">
-                        <i class="fas fa-times-circle"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="rejectedCount">5</h3>
-                        <p>Rejected Publications</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card changes">
-                    <div class="stat-icon">
-                        <i class="fas fa-edit"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="changesCount">8</h3>
-                        <p>Requires Changes</p>
-                    </div>
-                </div>
+            <!-- Table displaying all registered users -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allUsers"></tbody>
+                </table>
             </div>
-    </section> 
-    </section>    
-    
-<section id="section2" class="section active">
- <div class="content-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-newspaper"></i>Users</h2>
-                    <button class="view-all" onclick="navigateTo('publications')">View All <i class="fas fa-arrow-right"></i></button>
-                </div>
-                
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Username</th>
-                                <th>Role</th>
-                            </tr>
-                        </thead>
-                        <tbody id="allUsers"></tbody>
-                    </table>
-                </div>
-            </div>
-</section>
-<section id="section3" class="section active" >
-<h2>section3</h2>
-           
-</section>
-<section id="section4" class="section active">
-<h2>section4</h2>
-<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+        </div>
+    </section>
 
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-</section>
-<section id="section5" class="section active">
-<h2>section5</h2>
-<p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-</section>
 </div>
 
+<!-- FOOTER -->
+<footer class="footer">
+    <p>Academic Publication System &copy; 2026</p>
+</footer>
 
-            <!-- FOOTER -->
-     <footer class="footer">
-        <p>Academic Publication and Research Tracking System &copy; 2024</p>
-    </footer>
+<script>
+/* Load admin name + username from session */
+fetch('/user-info')
+.then(res => res.json())
+.then(data => {
+    document.getElementById('adminName').innerText = data.user_info.name;
+    document.getElementById('username').innerText = data.user_info.username;
+});
+
+/* Load dashboard statistics */
+fetch('/admin/stats')
+.then(res => res.json())
+.then(data => {
+    document.getElementById('pubCount').innerText = data.totalpublications;
+    document.getElementById('studentCount').innerText = data.totalStudents;
+    document.getElementById('researcherCount').innerText = data.totalResearchers;
+    document.getElementById('coordinatorCount').innerText = data.totalCoordinators;
+});
+
+/* Load all users into the table */
+function loadUsers() {
+    fetch('/admin/allUsers')
+    .then(res => res.json())
+    .then(rows => {
+        const table = document.getElementById('allUsers');
+
+        table.innerHTML = rows.map(row => `
+            <tr>
+                <td>${row.id}</td>
+                <td>${row.name}</td>
+                <td>${row.username}</td>
+                <td>${row.role}</td>
+                <td>
+                    <button class="delete-btn" onclick="deleteUser(${row.id})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    });
+}
+
+/* Run when page loads */
+document.addEventListener('DOMContentLoaded', loadUsers);
+
+/* Delete user by ID */
+function deleteUser(id){
+    if(confirm("Delete this user?")){
+        fetch('/admin/deleteUser/' + id, {
+            method:'DELETE'
+        })
+        .then(res => res.json())
+        .then(() => loadUsers());
+    }
+}
+
+/* Logout redirect */
+function logout(){
+    window.location.href="/login";
+}
+
+/* Go to profile page */
+function profile(){
+    window.location.href="/profile";
+}
+</script>
 
 </body>
 </html>
-
-<script>
-
-//Fetching user info to be displayed
- fetch('http://localhost:3000/user-info', {
-    method: 'GET',
-    headers: {
-'Content-Type': 'application/json'
-},
-})
-.then(response => response.json())
-.then(data => {
-console.log('Response from server', data)
-document.getElementById('adminName').innerText = `${data.user_info.name}`;
-document.getElementById('username').innerText = `${data.user_info.username}`;
-});
-
-//Fetching stats to be displayed
- fetch('http://localhost:3000/admin/stats', {
-    method: 'GET',
-    headers: {
-'Content-Type': 'application/json'
-},
-})
-.then(response => response.json())
-.then(data => {
-console.log('Response from server', data)
-document.getElementById('userCount').innerText = `${data.totalUsers}`;
-document.getElementById('pubCount').innerText = `${data.totalpublications}`;
-
-});
-
-function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        // In real implementation, call logout API
-        window.location.href = '/login';
-    }
-}
-
-// Close modal when clicking outside
-window.addEventListener('click', function(event) {
-    const modals = document.querySelectorAll('.modal.active');
-    modals.forEach(modal => {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-});
-  
-function profile() {
-        // In real implementation, call logout API
-        window.location.href = '/profile';
-}
-
-
-function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#4CAF50;color:#fff;padding:15px 25px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:3000;animation:slideIn .3s ease';
-    document.body.appendChild(toast);
-    setTimeout(() => {
-        toast.style.animation = 'slideOut .3s ease';
-        setTimeout(() => document.body.removeChild(toast), 300);
-    }, 3000);
-    if (!document.querySelector('#toast-styles')) {
-        const style = document.createElement('style');
-        style.id = 'toast-styles';
-        style.textContent = '@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}';
-        document.head.appendChild(style);
-    }
-}
-
-function viewUser(id) { 
-    showToast(`Opening User Info #${id}`);
-    window.open(`/view-pdf/${id}`, '_blank');
- }
-
- function removeUser(id) { 
-    showToast(`Deleting User #${id}`);
-    //Fetching user info to be displayed
-  if (confirm("Are you sure you want to delete this user")) {
-        fetch(`/admin/deleteUser/${id}`, {
-            method: 'DELETE', // Tell the server to delete
-        }) 
-    .then(response => response.text())
-    .then(data => {
-    console.log('Response from server', data)
-    });
-}
- }
-
-
-function UserData() {
-
-        //Fetching user info to be displayed
-    fetch('http://localhost:3000/admin/allUsers', {
-        method: 'GET',
-        headers: {
-    'Content-Type': 'application/json'
-    },
-    })
-    .then(response => response.json())
-    .then(data => {
-    console.log('Response from server', data)
-
-
-    const usersTable = document.getElementById('allUsers');
-    usersTable.innerHTML = data.map(usr => `
-        <tr>
-            <td><strong>${usr.id}</strong></td>
-            <td>${usr.name}</td>
-            <td>${usr.username}</td>
-            <td>${usr.role}</td>
-            <td>
-                <button class="action-btn-small btn-primary" onclick="viewUser(${usr.id})"><i class="fas fa-eye"></i> View</button>
-                <button class="action-btn-small btn-primary" onclick="removeUser(${usr.id})"><i class="fas fa-trash"></i>Remove</button>
-
-            </td>
-        </tr>
-    `).join('');
-    
-});
- };
-  document.addEventListener('DOMContentLoaded', UserData);  
-
-</script>

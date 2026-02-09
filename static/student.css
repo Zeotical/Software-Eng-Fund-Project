@@ -1,9 +1,11 @@
+/* Reset default spacing and enable consistent sizing */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Main page background and base font */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -11,12 +13,14 @@ body {
     color: #333;
 }
 
+/* Main page wrapper */
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
 }
 
+/* Top navigation bar */
 .navbar {
     background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
     color: white;
@@ -27,6 +31,7 @@ body {
     z-index: 1000;
 }
 
+/* Navbar layout */
 .nav-container {
     display: flex;
     justify-content: space-between;
@@ -34,6 +39,7 @@ body {
     padding: 15px 0;
 }
 
+/* Brand title */
 .nav-brand h2 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -42,12 +48,14 @@ body {
     gap: 10px;
 }
 
+/* Navigation links area */
 .nav-menu {
     display: flex;
     align-items: center;
     gap: 25px;
 }
 
+/* Individual navigation link */
 .nav-link {
     color: rgba(255,255,255,0.9);
     text-decoration: none;
@@ -60,11 +68,13 @@ body {
     font-weight: 500;
 }
 
+/* Hover/active state for nav links */
 .nav-link:hover, .nav-link.active {
     background: rgba(255,255,255,0.1);
     color: white;
 }
 
+/* User info area in navbar */
 .user-menu {
     display: flex;
     align-items: center;
@@ -72,6 +82,7 @@ body {
     margin-left: 20px;
 }
 
+/* Username pill */
 .username {
     font-weight: 600;
     background: rgba(255,255,255,0.1);
@@ -79,6 +90,7 @@ body {
     border-radius: 20px;
 }
 
+/* Logout button */
 .logout-btn {
     background: rgba(255,255,255,0.15);
     color: white;
@@ -96,6 +108,7 @@ body {
     background: rgba(255,255,255,0.25);
 }
 
+/* Section visibility control */
 .section {
     display: none;
     animation: fadeIn 0.5s ease;
@@ -105,11 +118,13 @@ body {
     display: block;
 }
 
+/* Fade-in animation for page sections */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Dashboard header card */
 .dashboard-header {
     background: white;
     padding: 30px;
@@ -129,6 +144,7 @@ body {
     font-size: 1.1rem;
 }
 
+/* Generic content card */
 .content-section {
     background: white;
     border-radius: 12px;
@@ -137,6 +153,7 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* Section header row */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -155,6 +172,7 @@ body {
     gap: 10px;
 }
 
+/* Small action links in headers */
 .view-all, .mark-all-read {
     color: #3498db;
     background: none;
@@ -171,6 +189,7 @@ body {
     text-decoration: underline;
 }
 
+/* Saved publications counter */
 .saved-stats {
     font-size: 1rem;
     color: #666;
@@ -184,6 +203,7 @@ body {
     color: #1976d2;
 }
 
+/* Empty state message box */
 .empty-state {
     text-align: center;
     padding: 50px 20px;
@@ -212,10 +232,12 @@ body {
     margin-right: auto;
 }
 
+/* Scroll wrapper for tables */
 .table-container {
     overflow-x: auto;
 }
 
+/* Data table styling */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -241,6 +263,7 @@ body {
     background: #f8f9fa;
 }
 
+/* Quick action panel */
 .quick-actions {
     background: white;
     border-radius: 12px;
@@ -255,12 +278,14 @@ body {
     font-size: 1.3rem;
 }
 
+/* Action buttons grid */
 .action-buttons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
 }
 
+/* Large action button */
 .action-btn {
     display: flex;
     flex-direction: column;
@@ -284,21 +309,25 @@ body {
     box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
 }
 
+/* Icon inside action button */
 .action-btn i {
     font-size: 2.2rem;
     margin-bottom: 10px;
 }
 
+/* Label inside action button */
 .action-btn span {
     font-size: 0.95rem;
     text-align: center;
 }
 
+/* Activity feed list */
 .activities-list {
     max-height: 300px;
     overflow-y: auto;
 }
 
+/* Individual activity row */
 .activity-item {
     display: flex;
     padding: 15px;
@@ -310,11 +339,13 @@ body {
     background-color: #f9f9f9;
 }
 
+/* Highlight unread activity */
 .activity-item.unread {
     background-color: #e3f2fd;
     border-left: 3px solid #2196F3;
 }
 
+/* Activity icon */
 .activity-icon {
     margin-right: 15px;
     color: #666;
@@ -322,6 +353,7 @@ body {
     min-width: 24px;
 }
 
+/* Activity text */
 .activity-content p {
     margin: 0 0 5px 0;
     color: #333;
@@ -333,6 +365,7 @@ body {
     font-size: 0.85rem;
 }
 
+/* Small action buttons */
 .action-btn-small {
     padding: 6px 15px;
     border: none;
@@ -346,6 +379,7 @@ body {
     transition: all 0.3s;
 }
 
+/* Primary button */
 .btn-primary {
     background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     color: white;
@@ -356,6 +390,7 @@ body {
     transform: translateY(-1px);
 }
 
+/* Secondary button */
 .btn-secondary {
     background: #6c757d;
     color: white;
@@ -365,6 +400,7 @@ body {
     background: #545b62;
 }
 
+/* Success button */
 .btn-success {
     background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     color: white;
@@ -374,6 +410,7 @@ body {
     background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
 }
 
+/* Danger button */
 .btn-danger {
     background: linear-gradient(135deg, #F44336 0%, #d32f2f 100%);
     color: white;
@@ -383,6 +420,7 @@ body {
     background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
 }
 
+/* Publications grid layout */
 .publications-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -390,6 +428,7 @@ body {
     margin-top: 20px;
 }
 
+/* Publication card */
 .publication-card {
     background: white;
     border-radius: 10px;
@@ -404,10 +443,12 @@ body {
     box-shadow: 0 5px 20px rgba(0,0,0,0.12);
 }
 
+/* Publication header */
 .publication-header {
     margin-bottom: 15px;
 }
 
+/* Publication title */
 .publication-title {
     font-size: 1.2rem;
     color: #2c3e50;
@@ -416,12 +457,14 @@ body {
     line-height: 1.4;
 }
 
+/* Authors text */
 .publication-authors {
     color: #666;
     font-size: 0.95rem;
     margin-bottom: 10px;
 }
 
+/* Publication meta info */
 .publication-meta {
     display: flex;
     gap: 15px;
@@ -431,6 +474,7 @@ body {
     flex-wrap: wrap;
 }
 
+/* Meta item */
 .meta-item {
     display: flex;
     align-items: center;
@@ -441,6 +485,7 @@ body {
     color: #3498db;
 }
 
+/* Short abstract preview */
 .publication-abstract {
     color: #555;
     line-height: 1.6;
@@ -452,6 +497,7 @@ body {
     overflow: hidden;
 }
 
+/* Action buttons under publication */
 .publication-actions {
     display: flex;
     gap: 10px;
@@ -459,10 +505,12 @@ body {
     flex-wrap: wrap;
 }
 
+/* Highlight saved publications */
 .saved-publication-card {
     border-left: 4px solid #FFA726;
 }
 
+/* Search input box */
 .search-box {
     position: relative;
     width: 300px;
@@ -484,6 +532,7 @@ body {
     color: #666;
 }
 
+/* Filter controls */
 .filters {
     display: flex;
     gap: 20px;
@@ -512,12 +561,14 @@ body {
     min-width: 150px;
 }
 
+/* Profile layout grid */
 .profile-container {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 30px;
 }
 
+/* Profile card */
 .profile-card {
     background: white;
     border-radius: 12px;
@@ -525,6 +576,7 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* Profile header area */
 .profile-header {
     display: flex;
     align-items: center;
@@ -532,6 +584,7 @@ body {
     margin-bottom: 30px;
 }
 
+/* Avatar circle */
 .profile-avatar {
     width: 100px;
     height: 100px;
@@ -544,6 +597,7 @@ body {
     font-size: 3rem;
 }
 
+/* Profile text details */
 .profile-info h2 {
     color: #2c3e50;
     margin-bottom: 5px;
@@ -565,6 +619,7 @@ body {
     font-size: 0.95rem;
 }
 
+/* Profile info rows */
 .profile-details {
     margin: 25px 0;
 }
@@ -588,12 +643,14 @@ body {
     max-width: 60%;
 }
 
+/* Profile action buttons */
 .profile-actions {
     display: flex;
     gap: 15px;
     margin-top: 25px;
 }
 
+/* Profile activity section */
 .profile-activity {
     background: white;
     border-radius: 12px;
@@ -609,6 +666,7 @@ body {
     gap: 10px;
 }
 
+/* Footer area */
 .footer {
     text-align: center;
     padding: 25px;
@@ -618,6 +676,7 @@ body {
     background: white;
 }
 
+/* Tablet layout adjustments */
 @media (max-width: 992px) {
     .profile-container {
         grid-template-columns: 1fr;
@@ -628,6 +687,7 @@ body {
     }
 }
 
+/* Mobile layout adjustments */
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;

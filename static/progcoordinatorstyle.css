@@ -1029,7 +1029,789 @@ body {
     border-top: 2px solid #f0f0f0;
 }
 
-/* Empty state for publications */
+/* Reset and base layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Main page styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Main content wrapper */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Top navigation bar */
+.navbar {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: 0 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Navbar layout */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+/* Brand title */
+.nav-brand h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Navigation links container */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Individual navigation link */
+.nav-link {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+/* Active and hover states */
+.nav-link:hover, .nav-link.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+/* User info section */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 20px;
+}
+
+/* Username badge */
+.username {
+    font-weight: 600;
+    background: rgba(255,255,255,0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+}
+
+/* Logout button */
+.logout-btn {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.logout-btn:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+/* Page sections */
+.section {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.section.active {
+    display: block;
+}
+
+/* Fade animation for sections */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Dashboard header card */
+.dashboard-header {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.dashboard-header h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+}
+
+.dashboard-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Statistics grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Statistic card */
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+/* Hover effect for stat card */
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+/* Status color indicators */
+.stat-card.pending { border-top: 4px solid #FFA726; }
+.stat-card.approved { border-top: 4px solid #4CAF50; }
+.stat-card.rejected { border-top: 4px solid #F44336; }
+.stat-card.changes { border-top: 4px solid #2196F3; }
+
+/* Icon inside stat card */
+.stat-icon {
+    font-size: 2.5rem;
+    margin-right: 20px;
+    color: #666;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.03);
+    border-radius: 50%;
+}
+
+/* Stat numbers and labels */
+.stat-info h3 {
+    font-size: 2.2rem;
+    margin: 0;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+.stat-info p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Content section card */
+.content-section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* Section header row */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Small action links */
+.view-all, .mark-all-read {
+    color: #3498db;
+    background: none;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.95rem;
+}
+
+.view-all:hover, .mark-all-read:hover {
+    text-decoration: underline;
+}
+
+/* Table container for horizontal scroll */
+.table-container {
+    overflow-x: auto;
+}
+
+/* Data table */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+/* Table headers */
+.data-table th {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: left;
+    color: #2c3e50;
+    font-weight: 600;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Table cells */
+.data-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    color: #555;
+}
+
+/* Row hover effect */
+.data-table tr:hover {
+    background: #f8f9fa;
+}
+
+/* Status label styling */
+.data-table .status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status.pending { background: #FFF3CD; color: #856404; }
+.status.approved { background: #D4EDDA; color: #155724; }
+.status.rejected { background: #F8D7DA; color: #721C24; }
+.status.changes { background: #D1ECF1; color: #0C5460; }
+
+/* Small action buttons */
+.action-btn-small {
+    padding: 6px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+/* Review button */
+.btn-review { background: #3498db; color: white; }
+.btn-review:hover { background: #2980b9; }
+
+/* View button */
+.btn-view { background: #6c757d; color: white; }
+.btn-view:hover { background: #545b62; }
+
+/* Quick actions section */
+.quick-actions {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 25px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* Quick action buttons grid */
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* Large action button */
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 15px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #2c3e50;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+/* Hover effect for action button */
+.action-btn:hover {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    border-color: #3498db;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+/* Icon and text inside action buttons */
+.action-btn i {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.action-btn span {
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* Activities list section */
+.activities-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Individual activity item */
+.activity-item {
+    display: flex;
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.3s;
+}
+
+.activity-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Highlight unread activity */
+.activity-item.unread {
+    background-color: #e3f2fd;
+    border-left: 3px solid #2196F3;
+}
+
+/* Activity icon */
+.activity-icon {
+    margin-right: 15px;
+    color: #666;
+    font-size: 1.2rem;
+    min-width: 24px;
+}
+
+/* Activity text */
+.activity-content p {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.activity-content small {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+/* Review section search box */
+.search-box {
+    position: relative;
+    width: 300px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+/* Search icon inside input */
+.search-box i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+/* Filters area */
+.filters {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+/* Filter group */
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.filter-group select {
+    padding: 8px 15px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.95rem;
+    min-width: 150px;
+}
+
+/* Publications list grid */
+.publications-list {
+    display: grid;
+    gap: 20px;
+}
+
+/* Publication card */
+.publication-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    border-left: 4px solid #3498db;
+    transition: all 0.3s;
+}
+
+.publication-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+/* Publication header row */
+.publication-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 15px;
+}
+
+/* Publication title */
+.publication-title {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Publication metadata */
+.publication-meta {
+    display: flex;
+    gap: 20px;
+    margin: 10px 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Publication action buttons */
+.publication-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Analytics filter card */
+.filters-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 20px 0 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.filters-card h3 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Filter form layout */
+.filter-form .form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Form group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95rem;
+}
+
+.form-group select, .form-group input {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background: white;
+}
+
+/* Form buttons row */
+.form-actions {
+    display: flex;
+    gap: 15px;
+}
+
+/* Primary and secondary buttons */
+.btn-primary, .btn-secondary {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+/* Charts grid layout */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin: 25px 0;
+}
+
+/* Individual chart card */
+.chart-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.chart-card h3 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Summary statistic cards */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.summary-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border-top: 4px solid #3498db;
+}
+
+.summary-card h4 {
+    margin: 0 0 10px 0;
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.summary-card h2 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Guidelines section container */
+.guidelines-container {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* Individual guideline card */
+.guideline-item {
+    background: #f8f9fa;
+    border-left: 4px solid #3498db;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.guideline-item h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.guideline-item p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.guideline-meta {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.guideline-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Modal overlay */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+}
+
+/* Modal content box */
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+/* Slide up animation */
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Modal header */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.modal-header h2 {
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* Close button */
+.close {
+    font-size: 2rem;
+    color: #666;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* Modal body content */
+.modal-body {
+    padding: 30px;
+}
+
+/* Modal action buttons row */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px solid #f0f0f0;
+}
+/* Empty state styling for publications list */
 .publications-list .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -1050,7 +1832,7 @@ body {
     margin: 0;
 }
 
-/* Responsive adjustments */
+/* Responsive layout tweaks for smaller screens */
 @media (max-width: 768px) {
     .publication-meta-grid {
         grid-template-columns: 1fr;
@@ -1069,7 +1851,7 @@ body {
     }
 }
 
-/* Guidelines Section Styles */
+/* Guidelines main container */
 .guidelines-container {
     background: white;
     border-radius: 12px;
@@ -1077,6 +1859,7 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* Individual guideline card */
 .guideline-item {
     background: #f8f9fa;
     border-left: 4px solid #3498db;
@@ -1091,6 +1874,7 @@ body {
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
+/* Header section of a guideline */
 .guideline-header {
     display: flex;
     justify-content: space-between;
@@ -1098,6 +1882,7 @@ body {
     margin-bottom: 15px;
 }
 
+/* Guideline title text */
 .guideline-title {
     color: #2c3e50;
     margin: 0;
@@ -1105,6 +1890,7 @@ body {
     flex: 1;
 }
 
+/* Category tag for guideline */
 .guideline-category {
     background: #e3f2fd;
     color: #1976d2;
@@ -1116,6 +1902,7 @@ body {
     white-space: nowrap;
 }
 
+/* Category color variations */
 .guideline-category.submission { background: #e8f5e8; color: #2e7d32; }
 .guideline-category.ethics { background: #fff3e0; color: #ef6c00; }
 .guideline-category.categories { background: #f3e5f5; color: #7b1fa2; }
@@ -1124,6 +1911,7 @@ body {
 .guideline-category.review { background: #f3e5f5; color: #7b1fa2; }
 .guideline-category.general { background: #f5f5f5; color: #616161; }
 
+/* Content area inside guideline */
 .guideline-content {
     line-height: 1.6;
     color: #555;
@@ -1150,6 +1938,7 @@ body {
     margin-bottom: 8px;
 }
 
+/* Metadata section for guideline info */
 .guideline-meta {
     display: flex;
     gap: 20px;
@@ -1166,6 +1955,7 @@ body {
     gap: 5px;
 }
 
+/* Status labels */
 .guideline-status {
     padding: 3px 10px;
     border-radius: 12px;
@@ -1183,6 +1973,7 @@ body {
     color: #ef6c00;
 }
 
+/* Action buttons for guidelines */
 .guideline-actions {
     display: flex;
     gap: 10px;
@@ -1194,6 +1985,7 @@ body {
     font-size: 0.85rem;
 }
 
+/* Specific button styles */
 .btn-edit { background: #2196F3; color: white; }
 .btn-edit:hover { background: #1976D2; }
 
@@ -1206,7 +1998,7 @@ body {
 .btn-publish { background: #4CAF50; color: white; }
 .btn-publish:hover { background: #388E3C; }
 
-/* Guideline Form */
+/* Guideline form fields */
 .guideline-form .form-group {
     margin-bottom: 20px;
 }
@@ -1243,7 +2035,7 @@ body {
     line-height: 1.5;
 }
 
-/* Preview Modal */
+/* Preview modal content area */
 .preview-guideline-content {
     max-height: 400px;
     overflow-y: auto;
@@ -1253,6 +2045,7 @@ body {
     margin: 15px 0;
 }
 
+/* Preview metadata layout */
 .preview-meta {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1281,7 +2074,7 @@ body {
     font-weight: 500;
 }
 
-/* Empty state */
+/* Empty state for guidelines section */
 .guidelines-container .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -1299,7 +2092,7 @@ body {
     margin: 0 0 20px 0;
 }
 
-/* Responsive adjustments */
+/* Responsive tweaks for guidelines section */
 @media (max-width: 768px) {
     .guideline-header {
         flex-direction: column;

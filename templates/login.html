@@ -1,65 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Research Web - Register</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Academic Publication System</title>
+
+    <!-- Main shared system styling -->
+    <link rel="stylesheet" href="/static/styleForUsers.css">
+
+    <!-- Font and Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Page layout */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Login container */
+        .login-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Login card design */
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            border-top: 4px solid #3498db;
+        }
+
+        /* Login header */
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Password field with toggle icon */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .toggle-password:hover {
+            color: #3498db;
+        }
+
+        .form-group input {
+            width: 100%;
+        }
+
+        /* Full width login button */
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
+            padding: 12px;
+            font-size: 1rem;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Welcome to Login!</h1>
 
-    <div class="login">
-        <h1> Login</h1>
-        <form id="auth_form">
-            <input type="text" name="username" placeholder="username" id ="username" class="input-field" required autofocus>
-            <br>
-            <input type="password" name="password" placeholder="password" id="ps" class="input-field" required
-                autofocus>
-            <input type="image" src="https://www.svgrepo.com/show/453442/visibility-off.svg"
-                onclick="see_ps();return false;" id="lgimage">
-            <input type="submit" value="login" class="btn-login" />
-        </form>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand" style="margin: 0 auto;">
+                <h2><i class="fas fa-university"></i> Academic Publication System</h2>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login section -->
+    <div class="login-container">
+        <div class="login-card">
+
+            <!-- Login header text -->
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Please login to access your dashboard</p>
+            </div>
+
+            <!-- Login form -->
+            <form id="auth_form">
+
+                <!-- Username input -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="username"><i class="fas fa-user"></i> Username</label>
+                    <input type="text" name="username" placeholder="Enter your username" id="username" required autofocus>
+                </div>
+
+                <!-- Password input with show/hide -->
+                <div class="form-group" style="margin-bottom: 25px;">
+                    <label for="ps"><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" name="password" placeholder="Enter your password" id="ps" required>
+                        <i class="fas fa-eye toggle-password" id="toggleIcon" onclick="see_ps()"></i>
+                    </div>
+                </div>
+
+                <!-- Login button -->
+                <button type="submit" class="btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
     </div>
-</body>
 
-</html>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Academic Publication System &copy; 2026</p>
+    </footer>
 
-<script>
-    function see_ps() {
-        var y = document.getElementById("lgimage")
-        var x = document.getElementById("ps");
-        if (x.type == "password") {
-            x.type = "text";
-            y.src = "https://www.svgrepo.com/show/453440/visibility.svg";
+    <script>
+        // Password visibility toggle
+        function see_ps() {
+            var passwordInput = document.getElementById("ps");
+            var icon = document.getElementById("toggleIcon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
         }
-        else {
-            x.type = "password";
-            y.src = "https://www.svgrepo.com/show/453442/visibility-off.svg";
-        }
-    }
 
-    auth_form.addEventListener('submit', (e) => {
-        e.preventDefault()
+        // Login form submission
+        const auth_form = document.getElementById('auth_form');
 
-        const username = document.getElementById("username").value
-        const ps = document.getElementById("ps").value
-        fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, ps})
-        })
+        auth_form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Button loading state
+            const btn = document.querySelector('.btn-primary');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            btn.disabled = true;
+
+            // Get input values
+            const username = document.getElementById("username").value;
+            const ps = document.getElementById("ps").value;
+
+            // Send login request to backend
+            fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, ps })
+            })
             .then(response => response.text())
             .then(data => {
-                console.log('Response from server', data)
+                console.log('Response from server', data);
+                
+                // Restore button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+
+                // Redirect based on role returned by server
                 if (data == 'Admin') window.location.assign("/admin");
                 else if (data == 'Student') window.location.assign("/student");
                 else if (data == 'Researcher') window.location.assign("/researcher#section1");
                 else if (data == 'Programme Coordinator') window.location.assign("/prog_coord");
-
+                else {
+                    alert("Login failed: " + data);
+                }
             })
-    })
-</script>
+            .catch(err => {
+                console.error(err);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                alert("Connection error");
+            });
+        });
+    </script>
+
+</body>
+</html>

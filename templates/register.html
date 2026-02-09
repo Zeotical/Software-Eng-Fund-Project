@@ -1,184 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Research Web - Register</title> 
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <!-- Responsive layout -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Academic Publication System</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/static/styleForUsers.css">
+  <link rel="stylesheet" href="/static/auth.css">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
-<h1>Welcome to Research web!</h1>
 
-<div class="register">
-  <form id="register_form" >
-    <h1>Register</h1>
-    <input type="text" name="name_register" placeholder="Enter name" id="name" class="input-field" required autofocus maxlength="25">
-    <br>
-    <input type="text" name="username_register" placeholder="Enter username" id="username" class="input-field" required autofocus maxlength="25">
-    <br>
-    <input type="password" name="password_register" placeholder="Enter password" id= "ps" class="input-field" required autofocus maxlength="15">
-    <input type="image" src="https://www.svgrepo.com/show/453442/visibility-off.svg" onclick="see_ps();return false;" id="image" >
-
-    <div class="btn-box">
-      <button type="button" id="next">Next</button>
+  <!-- Navigation bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <!-- System title -->
+      <div class="nav-brand" style="margin: 0 auto;">
+        <h2><i class="fas fa-university"></i> Academic Publication System</h2>
+      </div>
     </div>
-    <a href="login" class="lnk-login">Already have an account? Login !</a>
+  </nav>
 
-  </form>
+  <!-- Registration container -->
+  <div class="register-container">
+    <div class="register-card" style="height: 500px;">
 
-  <form id="form2">
+      <!-- Form header -->
+      <div class="register-header">
+        <h1>Create Account</h1>
+      </div>
 
- <h1 style="margin-right:80px">Role Selection</h1> 
+      <!-- Step 1: Account details -->
+      <form id="register_form" onsubmit="return false;">
+        <h3 style="color:#666; margin-bottom:15px;">Step 1: Account Details</h3>
 
-    <div class="dropdown">
-      <button class="role-btn" type="button" onclick="return false;">Select Your Role</button>
-      <div class="content">
-        <div>
-        <input type="radio" id="role1"  name="role" value="Admin" onclick="submitRole()" >    
-        <label for="role1">Admin</label>  
+        <div class="form-group">
+          <label><i class="fas fa-user"></i> Full Name</label>
+          <input type="text" id="name" required placeholder="Ex: John Doe" maxlength="25">
         </div>
-        <div> 
-        <input type="radio" id="role2"  name="role" value="Programme Coordinator" onclick="submitRole()" >
-        <label for="role2">Programme Coordinator</label>
+
+        <div class="form-group">
+          <label><i class="fas fa-at"></i> Username</label>
+          <input type="text" id="username" required placeholder="Choose a username" maxlength="25">
         </div>
-        <div>
-        <input type="radio" id="role3"  name="role" value="Researcher" onclick="submitRole()" >
-        <label for="role3">Researcher</label>
-        <input type="radio" id="role4"  name="role" value="Student" onclick="submitRole()" >
-        <label for="role4">Student</label>
+
+        <div class="form-group">
+          <label><i class="fas fa-lock"></i> Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="ps" required placeholder="Create password" maxlength="15">
+            <i class="fas fa-eye toggle-password" id="toggleIcon"></i>
+          </div>
         </div>
-       </div>
+
+        <!-- Navigation buttons -->
+        <div class="btn-box">
+          <a href="login"
+            style="font-size:0.9rem; display:flex; align-items:center; text-decoration:none; color:#3498db;">Login
+            instead</a>
+          <button type="button" class="btn-next" id="next">Next <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </form>
+
+      <!-- Step 2: Role selection -->
+      <form id="form2" onsubmit="return false;">
+        <h3 style="color:#666; margin-bottom:15px;">Step 2: Select Role</h3>
+
+        <div class="role-grid">
+          <div class="role-option">
+            <input type="radio" id="role1" name="role" value="Admin">
+            <label for="role1"><i class="fas fa-user-shield fa-2x"></i><br>Admin</label>
+          </div>
+
+          <div class="role-option">
+            <input type="radio" id="role2" name="role" value="Programme Coordinator">
+            <label for="role2"><i class="fas fa-chalkboard-teacher fa-2x"></i><br>Coordinator</label>
+          </div>
+
+          <div class="role-option">
+            <input type="radio" id="role3" name="role" value="Researcher">
+            <label for="role3"><i class="fas fa-flask fa-2x"></i><br>Researcher</label>
+          </div>
+
+          <div class="role-option">
+            <input type="radio" id="role4" name="role" value="Student">
+            <label for="role4"><i class="fas fa-user-graduate fa-2x"></i><br>Student</label>
+          </div>
+        </div>
+
+        <!-- Final actions -->
+        <div class="btn-box">
+          <button type="button" class="btn-back" id="back"><i class="fas fa-arrow-left"></i> Back</button>
+          <button type="submit" class="btn-register" id="btn-submit-final">Register <i class="fas fa-check"></i></button>
+         </div>
+      </form>
+
+      <!-- Progress indicator -->
+      <div class="step-row">
+        <div id="progress"></div>
+        <div class="step-col">Details</div>
+        <div class="step-col">Role</div>
+      </div>
+
     </div>
-
-    <div class="btn-box">
-      <button type="button" id="back" style="margin-right: 30px; margin-left: -10px;">Back</button>
-      <button type="button" id="next2" style="margin-right: 70px; margin-left: -20px;">Next</button>
-    </div> 
-    </form> 
-
-  <form id="form3" enctype="multipart/form-data">
-    <h1>Profile Setup</h1>  
-
-    <input type="file" name="pfp-select"  id="file" onchange="preview()">
-    <img  src="/static/profile_pics/default.svg" id="frame" width="100px" height="100px" onclick="trigger_fileinput()"/>
-    
-     <div class="btn-box">
-      <button type="button" id="back2">Back</button>
-    </div>
-    
-    <input  type="submit"  value="register" class="btn-register"/>
-  </form>  
-
-  <div class="step-row">
-    <div id="progress"></div>
-    <div class="step-col"><small>Step 1</small></div>
-    <div class="step-col"><small>Step 2</small></div>
-    <div class="step-col"><small>Step 3</small></div>
-    <br>
   </div>
-    
-</div>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Academic Publication System &copy; 2026</p>
+  </footer>
+
+  <!-- Page logic -->
+  <script src="/static/register.js"></script>
 </body>
+
 </html>
-
- <script>
-  function see_ps(){
-    var y=document.getElementById("image")
-    var x= document.getElementById("ps");
-    if (x.type=="password") {
-      x.type="text"; 
-      y.src="https://www.svgrepo.com/show/453440/visibility.svg"; }
-      else 
-      { x.type="password";
-        y.src="https://www.svgrepo.com/show/453442/visibility-off.svg";}  
-    } 
-
-  var form1 = document.getElementById("register_form"); 
-  var form2 = document.getElementById("form2");
-  var form3 = document.getElementById("form3");  
-  
-
-  var next = document.getElementById("next");
-  var next2 = document.getElementById("next2");
-  var back = document.getElementById("back");
-  var back2 = document.getElementById("back2");
-
-  var progress = document.getElementById("progress");
-
-  next.onclick = function(){
-    form1.style.left = "-450px";
-    form2.style.left = "40px";
-    progress.style.width ="240px"; 
-  }
-  back.onclick = function(){
-      form1.style.left = "40px";
-      form2.style.left = "450px" ;
-      progress.style.width ="120px";  
-   } 
-  
-  next2.onclick = function(){
-    form2.style.left = "-450px";
-    form3.style.left = "40px";
-    progress.style.width ="360px"; 
-  }
-
-  back2.onclick = function(){
-    form2.style.left = "40px";
-    form3.style.left = "450px" ;
-    progress.style.width ="240px";  
- } 
-
-function preview() {
-
-  frame.src = URL.createObjectURL(event.target.files[0]);
-  } 
-
- function trigger_fileinput(){
-  document.getElementById("file").click();
-
- }
-
-
-function submitRole() {
-  if (document.getElementById("role1").checked) {
-     return document.getElementById("role1").value;
-  }
-  if (document.getElementById("role2").checked) {
-      return document.getElementById("role2").value;
-  }
-  if (document.getElementById("role3").checked) {
-    return document.getElementById("role3").value;
-  }
-  if (document.getElementById("role4").checked) {
-  return document.getElementById("role4").value;
-  }
-  
-}
-
-form3.addEventListener('submit', (e) => {
-e.preventDefault()
-
-const name = document.getElementById("name").value
-const username = document.getElementById("username").value
-const ps = document.getElementById("ps").value
-const role = submitRole();
-fetch('http://localhost:3000/register', {
-    method: 'POST',
-    headers: {
-'Content-Type': 'application/json'
-},
-    body: JSON.stringify({ name, username, ps, role })
-})
-.then(response => response.text())
-.then(data => {
-console.log('Response from server', data)
-  if (role == 'Admin') window.location.assign("/admin");
-  else if (role == 'Student') window.location.assign("/student");
-  else if (role == 'Researcher') window.location.assign("/researcher#section1");
-  else if (role == 'Programme Coordinator') window.location.assign("/prog_coord");
-  
-})
-})
-  
-  </script>
-

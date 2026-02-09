@@ -1,4 +1,4 @@
-/* RESEARCHER PAGE */
+/* Main styling for the researcher dashboard, navigation, tables, forms, and modals */
 
 /* #section_nav{
 height:50vh;
@@ -16,6 +16,7 @@ text-transform:uppercase;
     box-sizing: border-box;
 }
 
+/* Page background and base typography */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -23,13 +24,14 @@ body {
     color: #333;
 }
 
+/* Main page container */
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* Navigation */
+/* Top navigation bar */
 .navbar {
     background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
     color: white;
@@ -40,6 +42,7 @@ body {
     z-index: 1000;
 }
 
+/* Navbar layout */
 .nav-container {
     display: flex;
     justify-content: space-between;
@@ -47,6 +50,7 @@ body {
     padding: 15px 0;
 }
 
+/* Brand title */
 .nav-brand h2 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -55,6 +59,7 @@ body {
     gap: 10px;
 }
 
+/* Navigation links */
 .nav-menu {
     display: flex;
     align-items: center;
@@ -78,6 +83,7 @@ body {
     color: white;
 }
 
+/* User info area in navbar */
 .user-menu {
     display: flex;
     align-items: center;
@@ -92,6 +98,7 @@ body {
     border-radius: 20px;
 }
 
+/* Logout button */
 .logout-btn {
     background: rgba(255,255,255,0.15);
     color: white;
@@ -109,7 +116,7 @@ body {
     background: rgba(255,255,255,0.25);
 }
 
-/* Sections */
+/* Sections layout */
 .section {
     display: none;
     width: 100%;
@@ -120,20 +127,24 @@ body {
 #section1{
     scroll-margin-top: 200px;
 }
+
+/* Section animation on anchor navigation */
 section:target {
     display: block;
     animation: fadeIn 0.5s ease forwards; 
-    }
+}
+
 .section.active{
     display: block;
 }
 
+/* Fade-in animation */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Dashboard Header */
+/* Dashboard welcome header */
 .dashboard-header {
     background: white;
     padding: 30px;
@@ -153,7 +164,7 @@ section:target {
     font-size: 1.1rem;
 }
 
-/* Stats Grid */
+/* Stats cards grid */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -161,6 +172,7 @@ section:target {
     margin-bottom: 30px;
 }
 
+/* Individual stat card */
 .stat-card {
     background: white;
     border-radius: 12px;
@@ -177,22 +189,13 @@ section:target {
     box-shadow: 0 8px 25px rgba(0,0,0,0.12);
 }
 
-.stat-card.pending {
-    border-top: 4px solid #FFA726;
-}
+/* Status color indicators */
+.stat-card.pending { border-top: 4px solid #FFA726; }
+.stat-card.approved { border-top: 4px solid #4CAF50; }
+.stat-card.rejected { border-top: 4px solid #F44336; }
+.stat-card.changes { border-top: 4px solid #2196F3; }
 
-.stat-card.approved {
-    border-top: 4px solid #4CAF50;
-}
-
-.stat-card.rejected {
-    border-top: 4px solid #F44336;
-}
-
-.stat-card.changes {
-    border-top: 4px solid #2196F3;
-}
-
+/* Stat icon */
 .stat-icon {
     font-size: 2.5rem;
     margin-right: 20px;
@@ -206,6 +209,7 @@ section:target {
     border-radius: 50%;
 }
 
+/* Stat text info */
 .stat-info h3 {
     font-size: 2.2rem;
     margin: 0;
@@ -220,7 +224,7 @@ section:target {
     font-weight: 500;
 }
 
-/* Content Sections */
+/* Generic content card */
 .content-section {
     background: white;
     border-radius: 12px;
@@ -229,6 +233,7 @@ section:target {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* Section title header */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -247,27 +252,12 @@ section:target {
     gap: 10px;
 }
 
-.view-all, .mark-all-read {
-    color: #3498db;
-    background: none;
-    border: none;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.95rem;
-}
-
-.view-all:hover, .mark-all-read:hover {
-    text-decoration: underline;
-}
-
-/* Tables */
+/* Table container */
 .table-container {
     overflow-x: auto;
 }
 
+/* Data table styling */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -293,6 +283,7 @@ section:target {
     background: #f8f9fa;
 }
 
+/* Status labels */
 .data-table .status {
     padding: 6px 12px;
     border-radius: 20px;
@@ -306,7 +297,7 @@ section:target {
 .status.rejected { background: #F8D7DA; color: #721C24; }
 .status.changes { background: #D1ECF1; color: #0C5460; }
 
-/* Action Buttons */
+/* Small action buttons */
 .action-btn-small {
     padding: 6px 15px;
     border: none;
@@ -326,7 +317,128 @@ section:target {
 .btn-view { background: #6c757d; color: white; }
 .btn-view:hover { background: #545b62; }
 
-/* Quick Actions */
+/* Delete button styling */
+.delete-btn {
+    background: linear-gradient(135deg, #ff4d4f, #c9184a);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s ease;
+}
+
+.delete-btn i {
+    font-size: 12px;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(135deg, #e63946, #b5179e);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.delete-btn:active {
+    transform: scale(0.95);
+}
+
+/* Submit publication card */
+.submit-card {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.section-subtitle {
+    font-size: 13px;
+    color: #777;
+    margin-top: 4px;
+}
+
+/* Publication form layout */
+.publication-form {
+    margin-top: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    flex: 100%;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #4c8bf5;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76,139,245,0.15);
+}
+
+.form-group small {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.form-actions {
+    margin-top: 15px;
+}
+
+/* Submit publication button */
+.submit-btn {
+    background: linear-gradient(135deg, #4c8bf5, #2563eb);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.submit-btn:active {
+    transform: scale(0.97);
+}
+/* Quick action panel where users can access main features quickly */
 .quick-actions {
     background: white;
     border-radius: 12px;
@@ -335,18 +447,21 @@ section:target {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* Title inside quick actions */
 .quick-actions h3 {
     margin-bottom: 20px;
     color: #2c3e50;
     font-size: 1.3rem;
 }
 
+/* Grid layout for action buttons */
 .action-buttons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
 }
 
+/* Individual action button card */
 .action-btn {
     display: flex;
     flex-direction: column;
@@ -362,6 +477,7 @@ section:target {
     font-weight: 500;
 }
 
+/* Hover effect for action buttons */
 .action-btn:hover {
     background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     border-color: #3498db;
@@ -370,22 +486,25 @@ section:target {
     box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
 }
 
+/* Icon inside action buttons */
 .action-btn i {
     font-size: 2.2rem;
     margin-bottom: 10px;
 }
 
+/* Label inside action buttons */
 .action-btn span {
     font-size: 0.95rem;
     text-align: center;
 }
 
-/* Activities List */
+/* Scrollable activity feed container */
 .activities-list {
     max-height: 300px;
     overflow-y: auto;
 }
 
+/* Single activity item row */
 .activity-item {
     display: flex;
     padding: 15px;
@@ -393,15 +512,18 @@ section:target {
     transition: background-color 0.3s;
 }
 
+/* Hover highlight for activity */
 .activity-item:hover {
     background-color: #f9f9f9;
 }
 
+/* Highlight unread activities */
 .activity-item.unread {
     background-color: #e3f2fd;
     border-left: 3px solid #2196F3;
 }
 
+/* Icon for activity item */
 .activity-icon {
     margin-right: 15px;
     color: #666;
@@ -409,6 +531,7 @@ section:target {
     min-width: 24px;
 }
 
+/* Activity text content */
 .activity-content p {
     margin: 0 0 5px 0;
     color: #333;
@@ -420,12 +543,13 @@ section:target {
     font-size: 0.85rem;
 }
 
-/* Review Section */
+/* Search bar container */
 .search-box {
     position: relative;
     width: 300px;
 }
 
+/* Search input styling */
 .search-box input {
     width: 100%;
     padding: 10px 40px 10px 15px;
@@ -434,6 +558,7 @@ section:target {
     font-size: 0.95rem;
 }
 
+/* Search icon inside input */
 .search-box i {
     position: absolute;
     right: 15px;
@@ -442,6 +567,7 @@ section:target {
     color: #666;
 }
 
+/* Filter controls row */
 .filters {
     display: flex;
     gap: 20px;
@@ -449,6 +575,7 @@ section:target {
     flex-wrap: wrap;
 }
 
+/* Individual filter group */
 .filter-group {
     display: flex;
     align-items: center;
@@ -460,6 +587,7 @@ section:target {
     color: #2c3e50;
 }
 
+/* Dropdown filter styling */
 .filter-group select {
     padding: 8px 15px;
     border: 2px solid #ddd;
@@ -469,12 +597,13 @@ section:target {
     min-width: 150px;
 }
 
-/* Publications List */
+/* Publication cards container */
 .publications-list {
     display: grid;
     gap: 20px;
 }
 
+/* Individual publication card */
 .publication-card {
     background: white;
     border-radius: 10px;
@@ -484,11 +613,13 @@ section:target {
     transition: all 0.3s;
 }
 
+/* Hover animation for publication card */
 .publication-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(0,0,0,0.12);
 }
 
+/* Publication header layout */
 .publication-header {
     display: flex;
     justify-content: space-between;
@@ -496,6 +627,7 @@ section:target {
     margin-bottom: 15px;
 }
 
+/* Publication title text */
 .publication-title {
     font-size: 1.2rem;
     color: #2c3e50;
@@ -503,6 +635,7 @@ section:target {
     font-weight: 600;
 }
 
+/* Publication meta info (author/date/etc.) */
 .publication-meta {
     display: flex;
     gap: 20px;
@@ -511,13 +644,14 @@ section:target {
     font-size: 0.9rem;
 }
 
+/* Action buttons under publication */
 .publication-actions {
     display: flex;
     gap: 10px;
     margin-top: 15px;
 }
 
-/* Analytics Section */
+/* Analytics filter card */
 .filters-card {
     background: white;
     padding: 25px;
@@ -526,6 +660,7 @@ section:target {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* Analytics filter title */
 .filters-card h3 {
     margin-bottom: 20px;
     color: #2c3e50;
@@ -534,6 +669,7 @@ section:target {
     gap: 10px;
 }
 
+/* Grid layout for analytics filters */
 .filter-form .form-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -541,11 +677,13 @@ section:target {
     margin-bottom: 20px;
 }
 
+/* Generic form group */
 .form-group {
     display: flex;
     flex-direction: column;
 }
 
+/* Form labels */
 .form-group label {
     margin-bottom: 8px;
     font-weight: 600;
@@ -553,6 +691,7 @@ section:target {
     font-size: 0.95rem;
 }
 
+/* Inputs and selects */
 .form-group select, .form-group input {
     padding: 10px;
     border: 2px solid #ddd;
@@ -561,11 +700,13 @@ section:target {
     background: white;
 }
 
+/* Buttons under forms */
 .form-actions {
     display: flex;
     gap: 15px;
 }
 
+/* Primary and secondary buttons */
 .btn-primary, .btn-secondary {
     padding: 12px 25px;
     border: none;
@@ -579,6 +720,7 @@ section:target {
     transition: all 0.3s;
 }
 
+/* Primary action button */
 .btn-primary {
     background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     color: white;
@@ -589,6 +731,7 @@ section:target {
     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
 
+/* Secondary action button */
 .btn-secondary {
     background: #6c757d;
     color: white;
@@ -598,7 +741,7 @@ section:target {
     background: #545b62;
 }
 
-/* Charts */
+/* Charts container grid */
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -606,6 +749,7 @@ section:target {
     margin: 25px 0;
 }
 
+/* Individual chart card */
 .chart-card {
     background: white;
     padding: 25px;
@@ -622,7 +766,7 @@ section:target {
     gap: 10px;
 }
 
-/* Summary Cards */
+/* Summary stat cards grid */
 .summary-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -630,6 +774,7 @@ section:target {
     margin: 30px 0;
 }
 
+/* Individual summary card */
 .summary-card {
     background: white;
     padding: 20px;
@@ -652,8 +797,7 @@ section:target {
     font-size: 2rem;
     font-weight: 700;
 }
-
-/* Guidelines */
+/* Guidelines section container where all guideline items are displayed */
 .guidelines-container {
     background: white;
     border-radius: 12px;
@@ -661,6 +805,7 @@ section:target {
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
+/* Individual guideline card */
 .guideline-item {
     background: #f8f9fa;
     border-left: 4px solid #3498db;
@@ -669,6 +814,7 @@ section:target {
     border-radius: 8px;
 }
 
+/* Guideline title row */
 .guideline-item h3 {
     color: #2c3e50;
     margin-bottom: 10px;
@@ -677,12 +823,14 @@ section:target {
     align-items: center;
 }
 
+/* Guideline text content */
 .guideline-item p {
     color: #555;
     line-height: 1.6;
     margin-bottom: 15px;
 }
 
+/* Metadata under each guideline (author/date/status) */
 .guideline-meta {
     display: flex;
     justify-content: space-between;
@@ -690,12 +838,13 @@ section:target {
     font-size: 0.85rem;
 }
 
+/* Action buttons for each guideline */
 .guideline-actions {
     display: flex;
     gap: 10px;
 }
 
-/* Modals */
+/* Modal overlay background */
 .modal {
     display: none;
     position: fixed;
@@ -710,10 +859,12 @@ section:target {
     animation: fadeIn 0.3s ease;
 }
 
+/* Show modal when active */
 .modal.active {
     display: flex;
 }
 
+/* Main modal content box */
 .modal-content {
     background: white;
     border-radius: 15px;
@@ -724,11 +875,13 @@ section:target {
     animation: slideUp 0.3s ease;
 }
 
+/* Modal slide animation */
 @keyframes slideUp {
     from { transform: translateY(50px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
+/* Modal header layout */
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -737,11 +890,13 @@ section:target {
     border-bottom: 2px solid #f0f0f0;
 }
 
+/* Modal title */
 .modal-header h2 {
     color: #2c3e50;
     margin: 0;
 }
 
+/* Close (X) button */
 .close {
     font-size: 2rem;
     color: #666;
@@ -753,10 +908,12 @@ section:target {
     color: #333;
 }
 
+/* Modal body content */
 .modal-body {
     padding: 30px;
 }
 
+/* Modal bottom action buttons area */
 .modal-actions {
     display: flex;
     justify-content: flex-end;
@@ -766,17 +923,19 @@ section:target {
     border-top: 2px solid #f0f0f0;
 }
 
-/* Review Modal Specific */
+/* Publication details section inside review modal */
 .publication-details {
     margin-bottom: 30px;
 }
 
+/* Decision panel container for approve/reject/change */
 .decision-panel {
     background: #f8f9fa;
     padding: 25px;
     border-radius: 10px;
 }
 
+/* Decision button group */
 .decision-options {
     display: flex;
     flex-direction: column;
@@ -784,6 +943,7 @@ section:target {
     margin: 20px 0;
 }
 
+/* Individual decision buttons */
 .decision-btn {
     padding: 15px;
     border: none;
@@ -798,30 +958,36 @@ section:target {
     font-size: 1rem;
 }
 
+/* Approve button style */
 .decision-btn.approve {
     background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     color: white;
 }
 
+/* Reject button style */
 .decision-btn.reject {
     background: linear-gradient(135deg, #F44336 0%, #d32f2f 100%);
     color: white;
 }
 
+/* Request changes button style */
 .decision-btn.request-changes {
     background: linear-gradient(135deg, #FFA726 0%, #f57c00 100%);
     color: white;
 }
 
+/* Hover animation for decision buttons */
 .decision-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+/* Feedback text area section */
 .feedback-section {
     margin-top: 25px;
 }
 
+/* Feedback label */
 .feedback-section label {
     display: block;
     margin-bottom: 10px;
@@ -829,6 +995,7 @@ section:target {
     color: #2c3e50;
 }
 
+/* Feedback textarea styling */
 .feedback-section textarea {
     width: 100%;
     padding: 15px;
@@ -840,7 +1007,7 @@ section:target {
     font-size: 0.95rem;
 }
 
-/* Footer */
+/* Page footer */
 .footer {
     text-align: center;
     padding: 25px;
@@ -850,7 +1017,7 @@ section:target {
     background: white;
 }
 
-/* Responsive Design */
+/* Mobile responsive adjustments */
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
@@ -891,4 +1058,163 @@ section:target {
         width: 95%;
         margin: 10px;
     }
+}
+
+/* Basic delete button styling */
+.delete-btn {
+    background: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s ease;
+}
+
+.delete-btn i {
+    font-size: 12px;
+}
+
+.delete-btn:hover {
+    background: #d9363e;
+    transform: translateY(-1px);
+}
+
+.delete-btn:active {
+    transform: scale(0.97);
+}
+
+/* Card for submitting a new publication */
+.submit-card {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+/* Subtitle under section titles */
+.section-subtitle {
+    font-size: 13px;
+    color: #777;
+    margin-top: 4px;
+}
+
+/* Publication submission form container */
+.publication-form {
+    margin-top: 20px;
+}
+
+/* Row layout for form fields */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+/* Form field group */
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Full width form group */
+.form-group.full {
+    flex: 100%;
+}
+
+/* Form labels */
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+/* Form inputs and textareas */
+.form-group input,
+.form-group textarea {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+/* Focus state for inputs */
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #4c8bf5;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76,139,245,0.15);
+}
+
+/* Helper text under fields */
+.form-group small {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* Actions area for form submit button */
+.form-actions {
+    margin-top: 15px;
+}
+
+/* Submit publication button */
+.submit-btn {
+    background: linear-gradient(135deg, #4c8bf5, #2563eb);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.submit-btn:active {
+    transform: scale(0.97);
+}
+
+/* Enhanced delete button style for researcher publications */
+.delete-btn {
+    background: linear-gradient(135deg, #ff4d4f, #c9184a);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s ease;
+}
+
+.delete-btn i {
+    font-size: 12px;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(135deg, #e63946, #b5179e);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.delete-btn:active {
+    transform: scale(0.95);
 }
