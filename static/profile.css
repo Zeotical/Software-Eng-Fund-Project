@@ -1,0 +1,228 @@
+/* Reset default spacing and use border-box sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base page styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* NAVBAR */
+.navbar {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: 0 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Navbar layout container */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+/* Brand/title in navbar */
+.nav-brand h2 {
+    font-size: 1.4rem;
+}
+
+/* Navigation menu links */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Individual nav link */
+.nav-link {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+/* Hover and active state for links */
+.nav-link:hover,
+.nav-link.active {
+    background: rgba(255,255,255,0.15);
+}
+
+/* User section on navbar */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Username text */
+.username {
+    font-weight: 600;
+}
+
+/* Logout button */
+.logout-btn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* PAGE CONTAINER */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* Dashboard header box */
+.dashboard-header {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.dashboard-header h1 {
+    margin-bottom: 5px;
+}
+
+/* PROFILE PAGE GRID LAYOUT */
+.profile-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 25px;
+}
+
+/* Card styling for profile sections */
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* LEFT SIDE PROFILE HEADER */
+.profile-header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Profile avatar circle */
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: white;
+}
+
+/* Role text styling */
+.profile-role {
+    color: #3498db;
+    font-weight: 600;
+}
+
+/* Profile info section */
+.profile-details {
+    margin-top: 20px;
+}
+
+/* Each detail row */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Label text */
+.detail-label {
+    color: #666;
+}
+
+/* Value text */
+.detail-value {
+    font-weight: 600;
+}
+
+/* FORM FIELDS */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+/* Form labels */
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+/* Input and textarea styling */
+.form-group input,
+.form-group textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    font-size: 0.95rem;
+}
+
+/* Focus state for inputs */
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Profile action buttons container */
+.profile-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+/* Primary button style */
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: none;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Secondary button style */
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 900px) {
+    .profile-container {
+        grid-template-columns: 1fr;
+    }
+}

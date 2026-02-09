@@ -1,0 +1,172 @@
+/* LANDING PAGE / HOME ROUTE STYLES */
+
+/* Main container for landing content */
+.landing-container {
+    flex: 1;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Top hero section */
+.hero-section {
+    margin-bottom: 50px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Main title */
+.hero-section h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+/* Subtitle text */
+.hero-section p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* Grid layout for action cards */
+.action-grid {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Grid for primary actions */
+.primary-actions {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Grid for secondary actions */
+.secondary-actions {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+/* Base card styling */
+.landing-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    text-decoration: none;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    opacity: 0;
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+/* Hover effect for cards */
+.landing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+    border-color: #3498db;
+}
+
+/* Highlighted primary card */
+.landing-card.highlight {
+    border-top: 4px solid #3498db;
+}
+
+/* Icon container inside highlighted card */
+.landing-card.highlight .icon-box {
+    width: 60px;
+    height: 60px;
+    background: #eaf6ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    color: #3498db;
+    font-size: 1.5rem;
+}
+
+/* Title inside highlighted card */
+.landing-card.highlight h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+}
+
+/* Description inside highlighted card */
+.landing-card.highlight p {
+    margin: 0;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+/* Secondary card layout */
+.secondary-actions .landing-card {
+    padding: 20px;
+    flex-direction: row;
+    gap: 15px;
+}
+
+/* Icon inside secondary cards */
+.secondary-actions .landing-card i {
+    font-size: 1.2rem;
+    color: #3498db;
+}
+
+/* Section divider line */
+.divider {
+    position: relative;
+    margin: 40px 0;
+    text-align: center;
+}
+
+/* Divider horizontal line */
+.divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    z-index: -1;
+}
+
+/* Divider text */
+.divider span {
+    background: #f5f7fa;
+    padding: 0 15px;
+    color: #999;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Info alert box */
+.info-alert {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 15px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Slide up animation for cards */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered animation timing */
+.landing-card:nth-child(1) { animation-delay: 0.1s; }
+.landing-card:nth-child(2) { animation-delay: 0.2s; }
+.landing-card:nth-child(3) { animation-delay: 0.3s; }
+.landing-card:nth-child(4) { animation-delay: 0.4s; }

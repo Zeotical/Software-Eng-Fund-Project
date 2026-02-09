@@ -2,48 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Responsive layout -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - Academic Publication System</title>
+
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Page styles -->
     <link rel="stylesheet" href="/static/student.css">
 </head>
 <body>
+
+    <!-- Navigation bar -->
     <nav class="navbar">
         <div class="nav-container">
+            
+            <!-- App title -->
             <div class="nav-brand">
                 <h2><i class="fas fa-university"></i> Academic Publication System</h2>
             </div>
+
+            <!-- Nav links -->
             <div class="nav-menu">
                 <a href="#dashboard" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="#publications" class="nav-link"><i class="fas fa-search"></i> Browse Publications</a>
                 <a href="#saved" class="nav-link"><i class="fas fa-bookmark"></i> Saved</a>
-                <a href="#profile" class="nav-link" onclick="profile()"><i class="fas fa-user-circle"></i> My Profile</a>
+
+                <!-- Profile -->
+                <a href="#profile" class="nav-link" onclick="profile()">
+                    <i class="fas fa-user-circle"></i> My Profile
+                </a>
+
+                <!-- User info -->
                 <div class="user-menu">
                     <span class="username" id="username"></span>
-                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+
+                    <!-- Logout -->
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="container">
+
+        <!-- Dashboard -->
         <section id="dashboard" class="section active">
+
+            <!-- Welcome -->
             <div class="dashboard-header">
                 <h1>Welcome, <span id="studentName">Alex Johnson</span></h1>
                 <p>Browse academic publications, track research, and access university resources</p>
             </div>
 
+            <!-- Quick actions -->
             <div class="quick-actions">
                 <h3>Quick Actions</h3>
                 <div class="action-buttons">
+
                     <button class="action-btn" onclick="navigateTo('publications')">
                         <i class="fas fa-search"></i>
                         <span>Browse Publications</span>
                     </button>
+
                     <button class="action-btn" onclick="navigateTo('saved')">
                         <i class="fas fa-bookmark"></i>
                         <span>View Saved</span>
                     </button>
+
                     <button class="action-btn" onclick="profile()">
                         <i class="fas fa-user-edit"></i>
                         <span>Edit Profile</span>
@@ -51,12 +80,17 @@
                 </div>
             </div>
 
+            <!-- Recent publications -->
             <div class="content-section">
                 <div class="section-header">
                     <h2><i class="fas fa-newspaper"></i> Recent Publications</h2>
-                    <button class="view-all" onclick="navigateTo('publications')">View All <i class="fas fa-arrow-right"></i></button>
+
+                    <button class="view-all" onclick="navigateTo('publications')">
+                        View All <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
                 
+                <!-- Publications table -->
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
@@ -67,30 +101,40 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
+
+                        <!-- Filled by JS -->
                         <tbody id="recentPublications"></tbody>
                     </table>
                 </div>
             </div>
 
+            <!-- Notifications -->
             <div class="content-section">
                 <div class="section-header">
                     <h2><i class="fas fa-bell"></i> Recent Notifications</h2>
                     <button class="mark-all-read" onclick="markAllAsRead()">Mark All as Read</button>
                 </div>
+
                 <div class="activities-list" id="notificationsList"></div>
             </div>
         </section>
 
+        <!-- Browse publications -->
         <section id="publications" class="section">
+
             <div class="section-header">
                 <h1><i class="fas fa-search"></i> Browse Publications</h1>
+
+                <!-- Search -->
                 <div class="search-box">
                     <input type="text" id="searchPublications" placeholder="Search publications..." onkeyup="filterPublications()">
                     <i class="fas fa-search"></i>
                 </div>
             </div>
 
+            <!-- Filters -->
             <div class="filters">
+
                 <div class="filter-group">
                     <label for="filterYear">Year:</label>
                     <select id="filterYear" onchange="filterPublications()">
@@ -124,16 +168,20 @@
                         <option value="2000">2000</option>
                     </select>
                 </div>
+
                 <div class="filter-group">
                     <label for="filterAuthor">Author:</label>
                     <input type="text" id="filterAuthor" placeholder="Filter by author..." onkeyup="filterPublications()">
                 </div>
             </div>
 
+            <!-- Results -->
             <div class="publications-grid" id="publicationsGrid"></div>
         </section>
 
+        <!-- Saved publications -->
         <section id="saved" class="section">
+
             <div class="section-header">
                 <h1><i class="fas fa-bookmark"></i> Saved Publications</h1>
                 <div class="saved-stats">
@@ -141,7 +189,9 @@
                 </div>
             </div>
 
+            <!-- Saved filters -->
             <div class="filters">
+
                 <div class="filter-group">
                     <label for="savedFilterYear">Year:</label>
                     <select id="savedFilterYear" onchange="filterSavedPublications()">
@@ -175,30 +225,35 @@
                         <option value="2000">2000</option>
                     </select>
                 </div>
+
                 <div class="filter-group">
                     <label for="savedSearch">Search:</label>
                     <input type="text" id="savedSearch" placeholder="Search saved publications..." onkeyup="filterSavedPublications()">
                 </div>
             </div>
 
+            <!-- Empty state -->
             <div id="noSavedPublications" class="empty-state">
                 <i class="fas fa-bookmark fa-3x"></i>
                 <h3>No Saved Publications</h3>
                 <p>You haven't saved any publications yet. Browse publications and click the save button to add them here.</p>
+
                 <button class="btn-primary" onclick="navigateTo('publications')">
                     <i class="fas fa-search"></i> Browse Publications
                 </button>
             </div>
 
+            <!-- Saved results -->
             <div class="publications-grid" id="savedPublicationsGrid"></div>
         </section>
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
-        <p>Academic Publication and Research Tracking System</p>
-        <p>CSE6214 - TT8L Project</p>
+        <p>Academic Publication and Research Tracking System &copy; 2026</p>
     </footer>
 
+    <!-- Page script -->
     <script src="/static/student.js"></script>
 </body>
 </html>

@@ -1,0 +1,317 @@
+/* LOGIN & REGISTER PAGE STYLES */
+
+/* Main layout structure */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Centered containers for login/register pages */
+.login-container,
+.register-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Card layout for both login and register */
+.login-card,
+.register-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-top: 4px solid #3498db;
+    position: relative;
+    width: 100%;
+}
+
+/* Login card size */
+.login-card {
+    max-width: 400px;
+    padding: 40px;
+}
+
+/* Register card size and animation container */
+.register-card {
+    width: 400px;
+    height: 550px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Page headers */
+.login-header,
+.register-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-header h1,
+.register-header h1 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.login-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Form field groups */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Labels for inputs */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Text input styling */
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+/* Input focus effect */
+.form-group input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Wrapper for password input and eye icon */
+.password-wrapper {
+    position: relative;
+}
+
+/* Show/hide password icon */
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.toggle-password:hover {
+    color: #3498db;
+}
+
+/* Full-width button layout */
+.btn-block {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 1rem;
+}
+
+/* Button group row */
+.btn-box {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Base button style */
+.btn-box button {
+    cursor: pointer;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+
+/* Primary action buttons */
+.btn-next,
+.btn-register,
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+}
+
+/* Back button style */
+.btn-back {
+    background: #6c757d;
+    color: white;
+}
+
+/* Button hover effect */
+.btn-next:hover,
+.btn-register:hover,
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Sliding form sections inside register card */
+#register_form,
+#form2,
+#form3 {
+    position: absolute;
+    top: 100px;
+    width: 320px;
+    transition: 0.5s ease-in-out;
+    background: white;
+}
+
+/* Initial positions for slide animation */
+#register_form { left: 40px; }
+#form2 { left: 450px; }
+#form3 { left: 450px; }
+
+/* Grid for selecting role */
+.role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Individual role option */
+.role-option {
+    position: relative;
+}
+
+/* Hide default radio button */
+.role-option input[type="radio"] {
+    display: none;
+}
+
+/* Role selection card */
+.role-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+    height: 90px;
+    background: #f9f9f9;
+}
+
+/* Hover effect for role card */
+.role-option label:hover {
+    border-color: #3498db;
+    background: white;
+}
+
+/* Selected role state */
+.role-option input[type="radio"]:checked + label {
+    border-color: #3498db;
+    background: #eaf6ff;
+    color: #2c3e50;
+    font-weight: bold;
+    box-shadow: 0 0 0 1px #3498db;
+}
+
+/* Profile picture upload section */
+.profile-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Circular image preview */
+.image-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #3498db;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.3s;
+    background: #f0f0f0;
+}
+
+/* Hover effect for preview image */
+.image-preview:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+}
+
+/* Small helper text under upload */
+.upload-hint {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Hide file input */
+#file {
+    display: none;
+}
+
+/* Step progress bar container */
+.step-row {
+    width: 320px;
+    height: 40px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    background: #f0f0f0;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+/* Step labels */
+.step-col {
+    flex: 1;
+    text-align: center;
+    color: #555;
+    position: relative;
+    z-index: 2;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Animated progress indicator */
+#progress {
+    position: absolute;
+    height: 100%;
+    width: 106px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-radius: 30px;
+    transition: 0.5s;
+    z-index: 1;
+}
+
+/* Progress bar sizing adjustment */
+.step-row {
+    width: 320px;
+}
+
+/* Progress width adjustment */
+#progress {
+    width: 160px; 
+}
